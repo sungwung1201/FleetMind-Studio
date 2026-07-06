@@ -30,12 +30,20 @@ export type Obstacle = {
   cell: Cell;
 };
 
+export type AgentCommand = {
+  fill: string[];
+  priority: "nearest" | "input_order";
+};
+
 export type AgentDecision = {
   taskId: string;
   amrId: string;
   targetId: string;
+  targetCell: Cell;
   reason: string;
   priority: number;
+  distance: number;
+  decision: "ASSIGN" | "SKIP" | "FAILED";
 };
 
 export type Scenario = {
