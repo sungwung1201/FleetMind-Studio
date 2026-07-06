@@ -199,3 +199,56 @@ h1 {
   border: 3px dashed;
   z-index: 5;
 }
+
+.path-cell {
+  z-index: 2;
+  border-radius: 999px;
+  opacity: 0.35;
+}
+
+.log-box {
+  max-height: 240px;
+  overflow: auto;
+  padding: 10px;
+  border-radius: 10px;
+  background: #101828;
+  color: #d0d5dd;
+  font-family: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+}
+
+.log-box p {
+  margin: 0 0 6px;
+}
+
+.fleet-table {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fleet-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #e4e7ec;
+  border-radius: 10px;
+  background: #f9fafb;
+}
+
+.fleet-row p {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.fleet-color {
+  width: 12px;
+  height: 32px;
+  border-radius: 999px;
+}
+
+.reservation-log {
+  max-height: 220px;
+}

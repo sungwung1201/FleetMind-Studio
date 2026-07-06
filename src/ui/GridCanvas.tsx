@@ -22,6 +22,23 @@ export function GridCanvas({ scenario, cellSize = 32 }: GridCanvasProps) {
         backgroundSize: `${cellSize}px ${cellSize}px`,
       }}
     >
+      {scenario.amrs.flatMap((amr) =>
+        amr.path.map((pathCell) => (
+          <div
+            key={`${amr.id}-path-${pathCell.t}`}
+            className="grid-object path-cell"
+            style={{
+              left: toPixel(pathCell.x, cellSize) + cellSize * 0.25,
+              top: toPixel(pathCell.y, cellSize) + cellSize * 0.25,
+              width: cellSize * 0.5,
+              height: cellSize * 0.5,
+              backgroundColor: amr.color,
+            }}
+            title={`${amr.id} path t=${pathCell.t}`}
+          />
+        ))
+      )}
+
       {scenario.obstacles.map((obstacle) => (
         <div
           key={obstacle.id}
@@ -52,23 +69,6 @@ export function GridCanvas({ scenario, cellSize = 32 }: GridCanvasProps) {
         </div>
       ))}
 
-      {scenario.amrs.map((amr) => (
-        <div
-          key={amr.id}
-          className="grid-object amr"
-          style={{
-            left: toPixel(amr.cell.x, cellSize),
-            top: toPixel(amr.cell.y, cellSize),
-            width: cellSize,
-            height: cellSize,
-            backgroundColor: amr.color,
-          }}
-          title={amr.id}
-        >
-          {amr.id.replace("AMR_", "A")}
-        </div>
-      ))}
-
       {scenario.amrs.map((amr) =>
         amr.goalCell ? (
           <div
@@ -87,6 +87,23 @@ export function GridCanvas({ scenario, cellSize = 32 }: GridCanvasProps) {
           </div>
         ) : null
       )}
+
+      {scenario.amrs.map((amr) => (
+        <div
+          key={amr.id}
+          className="grid-object amr"
+          style={{
+            left: toPixel(amr.cell.x, cellSize),
+            top: toPixel(amr.cell.y, cellSize),
+            width: cellSize,
+            height: cellSize,
+            backgroundColor: amr.color,
+          }}
+          title={amr.id}
+        >
+          {amr.id.replace("AMR_", "A")}
+        </div>
+      ))}
     </div>
   );
 }
