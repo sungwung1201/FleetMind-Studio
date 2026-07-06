@@ -366,3 +366,11 @@ h1 {
 .agent-log {
   max-height: 160px;
 }
+
+.dataset-buttons {
+  margin-top: 10px;
+}
+
+.dataset-log {
+  max-height: 140px;
+}

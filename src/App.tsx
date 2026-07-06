@@ -1,11 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import "./App.css";
-import type { AgentDecision, AMR, Scenario } from "./core/types";
+import type { AgentDecision, AMR, EpisodeDataset, Scenario } from "./core/types";
 import { getBlockedCellKeys, sameCell } from "./core/grid";
-import { ReservationTable } from "./core/reservationTable";
+import { ReservationTable, type ReservationEvent } from "./core/reservationTable";
 import { findPathTimeAStar } from "./core/timeAstar";
 import { validateFleetPlan, type ArbiterReport } from "./core/globalArbiter";
 import { runTaskAgent } from "./core/taskAgent";
+import {
+  createEpisodeDataset,
+  downloadJsonFile,
+  validateEpisodeDataset,
+} from "./dataset/episodeLogger";
 import { defaultScenario } from "./scenarios/defaultScenario";
 import { getScenarioById, scenarioList } from "./scenarios";
 import { GridCanvas } from "./ui/GridCanvas";
@@ -58,6 +63,9 @@ function App() {
   const [currentTick, setCurrentTick] = useState(0);
   const [commandInput, setCommandInput] = useState(DEFAULT_AGENT_COMMAND);
   const [agentDecisions, setAgentDecisions] = useState<AgentDecision[]>([]);
+  const [reservationEvents, setReservationEvents] = useState<ReservationEvent[]>([]);
+  const [latestDataset, setLatestDataset] = useState<EpisodeDataset | null>(null);
+  const [datasetLog, setDatasetLog] = useState<string[]>(["No dataset exported yet."]);
   const [systemLog, setSystemLog] = useState<string[]>([
     "System initialized.",
     "Ready to run Agent → Time A* → Reservation Table → Global Arbiter pipeline.",
@@ -71,7 +79,7 @@ function App() {
   const appendLog = (message: string) => {
     setSystemLog((prev) => {
       const next = [`[t=${currentTick}] ${message}`, ...prev];
-      return next.slice(0, 16);
+      return next.slice(0, 20);
     });
   };
 
@@ -83,7 +91,10 @@ function App() {
     setScenario(cloneScenario(nextBaseScenario));
     setAgentDecisions([]);
     setAgentLog(["No Agent decision yet."]);
+    setReservationEvents([]);
     setReservationLog([]);
+    setLatestDataset(null);
+    setDatasetLog(["No dataset exported yet."]);
     setArbiterReport(getEmptyArbiterReport());
     setSystemLog([
       `Scenario loaded: ${nextBaseScenario.name}`,
@@ -143,12 +154,14 @@ function App() {
     }
 
     const report = validateFleetPlan(nextScenario);
+    const events = reservationTable.getEvents();
 
     return {
       scenario: nextScenario,
       agentLogs: agentResult.logs,
       agentDecisions: agentResult.decisions,
       planningLogs,
+      reservationEvents: events,
       reservationLogs: reservationTable.getSummaryLines(32),
       arbiterReport: report,
     };
@@ -165,8 +178,11 @@ function App() {
       setScenario(result.scenario);
       setAgentLog(result.agentLogs);
       setAgentDecisions(result.agentDecisions);
+      setReservationEvents(result.reservationEvents);
       setReservationLog(result.reservationLogs);
       setArbiterReport(result.arbiterReport);
+      setLatestDataset(null);
+      setDatasetLog(["Dataset not exported yet."]);
       setSystemLog((prev) => [
         "[t=0] Agent planning completed.",
         "[t=0] Fleet Time A* planning completed.",
@@ -196,8 +212,11 @@ function App() {
     setScenario(result.scenario);
     setAgentLog(result.agentLogs);
     setAgentDecisions(result.agentDecisions);
+    setReservationEvents(result.reservationEvents);
     setReservationLog(result.reservationLogs);
     setArbiterReport(result.arbiterReport);
+    setLatestDataset(null);
+    setDatasetLog(["Dataset not exported yet."]);
     setSystemLog((prev) => [
       "[t=0] Plan-only pipeline executed.",
       `[t=0] Global Arbiter result: ${
@@ -207,6 +226,48 @@ function App() {
       ...result.planningLogs.map((log) => `[planner] ${log}`),
       ...prev,
     ].slice(0, 20));
+  };
+
+  const handleExportDataset = () => {
+    const hasPlannedPath = scenario.amrs.some((amr) => amr.path.length > 0);
+
+    if (!hasPlannedPath) {
+      setDatasetLog(["Plan or run the fleet before exporting dataset."]);
+      return;
+    }
+
+    const dataset = createEpisodeDataset({
+      scenario,
+      agentDecisions,
+      reservationEvents,
+      arbiterReport,
+    });
+
+    const validation = validateEpisodeDataset(dataset);
+    const filename = `${dataset.dataset_id}.json`;
+
+    setLatestDataset(dataset);
+    setDatasetLog([
+      `Exported: ${filename}`,
+      `Episodes: ${dataset.episodes.length}`,
+      `Validation: ${validation.ok ? "PASS" : "FAIL"}`,
+      ...validation.messages,
+    ]);
+
+    downloadJsonFile(filename, dataset);
+  };
+
+  const handleValidateDataset = () => {
+    if (!latestDataset) {
+      setDatasetLog(["No in-memory dataset found. Export dataset first."]);
+      return;
+    }
+
+    const validation = validateEpisodeDataset(latestDataset);
+    setDatasetLog([
+      `Validation: ${validation.ok ? "PASS" : "FAIL"}`,
+      ...validation.messages,
+    ]);
   };
 
   const handlePause = () => {
@@ -304,8 +365,7 @@ function App() {
           <p className="eyebrow">VISIONSPACE TESSERACT Assignment</p>
           <h1>Robot Fleet Web Studio</h1>
           <p className="subtitle">
-            Step 5: Rule-based AI Agent console with deterministic task
-            allocation and decision logging.
+            Step 6: Synthetic episode dataset export and validation.
           </p>
         </div>
 
@@ -356,6 +416,20 @@ function App() {
             <button onClick={handleStart}>Start Fleet</button>
             <button onClick={handlePause}>Pause</button>
             <button onClick={handleReset}>Reset</button>
+          </div>
+
+          <div className="button-row dataset-buttons">
+            <button onClick={handleExportDataset}>Export Dataset JSON</button>
+            <button onClick={handleValidateDataset}>Validate Dataset</button>
+          </div>
+
+          <div className="info-block">
+            <h3>Dataset Export</h3>
+            <div className="log-box dataset-log">
+              {datasetLog.map((log, index) => (
+                <p key={`${log}-${index}`}>{log}</p>
+              ))}
+            </div>
           </div>
 
           <div className="info-block">
