@@ -252,3 +252,54 @@ h1 {
 .reservation-log {
   max-height: 220px;
 }
+
+.scenario-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--navy);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.scenario-select {
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 10px;
+  background: white;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.arbiter-card {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #e4e7ec;
+}
+
+.arbiter-card strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.arbiter-card ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.arbiter-card.approved {
+  background: #ecfdf3;
+  border-color: #17b26a;
+  color: #027a48;
+}
+
+.arbiter-card.rejected {
+  background: #fff7ed;
+  border-color: #f79009;
+  color: #b54708;
+}
+
+.arbiter-log {
+  max-height: 180px;
+}

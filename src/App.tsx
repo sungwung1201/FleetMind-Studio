@@ -4,7 +4,9 @@ import type { AMR, Scenario } from "./core/types";
 import { getBlockedCellKeys, sameCell } from "./core/grid";
 import { ReservationTable } from "./core/reservationTable";
 import { findPathTimeAStar } from "./core/timeAstar";
+import { validateFleetPlan, type ArbiterReport } from "./core/globalArbiter";
 import { defaultScenario } from "./scenarios/defaultScenario";
+import { getScenarioById, scenarioList } from "./scenarios";
 import { GridCanvas } from "./ui/GridCanvas";
 
 function cloneScenario(scenario: Scenario): Scenario {
@@ -26,8 +28,21 @@ function getLastPathTick(amrs: AMR[]): number {
   return maxTick;
 }
 
+function getEmptyArbiterReport(): ArbiterReport {
+  return {
+    approved: false,
+    checkedTicks: 0,
+    cellCollisionCount: 0,
+    edgeSwapCount: 0,
+    blockedCellCount: 0,
+    outOfBoundsCount: 0,
+    messages: ["No Global Arbiter validation yet."],
+  };
+}
+
 function App() {
   const initialScenario = useMemo(() => cloneScenario(defaultScenario), []);
+  const [selectedScenarioId, setSelectedScenarioId] = useState(defaultScenario.id);
   const [scenario, setScenario] = useState<Scenario>(initialScenario);
   const [isRunning, setIsRunning] = useState(false);
   const [currentTick, setCurrentTick] = useState(0);
@@ -36,12 +51,29 @@ function App() {
     "Ready to plan Time A* paths for AMR fleet.",
   ]);
   const [reservationLog, setReservationLog] = useState<string[]>([]);
+  const [arbiterReport, setArbiterReport] = useState<ArbiterReport>(
+    getEmptyArbiterReport()
+  );
 
   const appendLog = (message: string) => {
     setSystemLog((prev) => {
       const next = [`[t=${currentTick}] ${message}`, ...prev];
       return next.slice(0, 16);
     });
+  };
+
+  const resetToScenario = (scenarioId: string) => {
+    const nextBaseScenario = getScenarioById(scenarioId);
+    setSelectedScenarioId(scenarioId);
+    setIsRunning(false);
+    setCurrentTick(0);
+    setScenario(cloneScenario(nextBaseScenario));
+    setReservationLog([]);
+    setArbiterReport(getEmptyArbiterReport());
+    setSystemLog([
+      `Scenario loaded: ${nextBaseScenario.name}`,
+      "Ready to plan Time A* paths for AMR fleet.",
+    ]);
   };
 
   const planFleetPaths = (sourceScenario: Scenario) => {
@@ -93,10 +125,13 @@ function App() {
       );
     }
 
+    const report = validateFleetPlan(nextScenario);
+
     return {
       scenario: nextScenario,
       planningLogs: logs,
       reservationLogs: reservationTable.getSummaryLines(32),
+      arbiterReport: report,
     };
   };
 
@@ -110,13 +145,17 @@ function App() {
       setCurrentTick(0);
       setScenario(result.scenario);
       setReservationLog(result.reservationLogs);
+      setArbiterReport(result.arbiterReport);
       setSystemLog((prev) => [
         "[t=0] Fleet Time A* planning completed.",
+        `[t=0] Global Arbiter result: ${
+          result.arbiterReport.approved ? "APPROVED" : "REJECTED"
+        }`,
         ...result.planningLogs.map((log) => `[t=0] ${log}`),
         ...prev,
       ].slice(0, 16));
 
-      if (plannedCount === 0) {
+      if (plannedCount === 0 || !result.arbiterReport.approved) {
         setIsRunning(false);
         return;
       }
@@ -132,14 +171,7 @@ function App() {
   };
 
   const handleReset = () => {
-    setIsRunning(false);
-    setCurrentTick(0);
-    setScenario(cloneScenario(defaultScenario));
-    setReservationLog([]);
-    setSystemLog([
-      "System reset.",
-      "Ready to plan Time A* paths for AMR fleet.",
-    ]);
+    resetToScenario(selectedScenarioId);
   };
 
   useEffect(() => {
@@ -228,8 +260,8 @@ function App() {
           <p className="eyebrow">VISIONSPACE TESSERACT Assignment</p>
           <h1>Robot Fleet Web Studio</h1>
           <p className="subtitle">
-            Step 3: Multi-AMR Time A* planning with Reservation Table based
-            cell and edge reservation.
+            Step 4: Scenario switching, Edge Swap test, Bottleneck test, and
+            Global Arbiter validation report.
           </p>
         </div>
 
@@ -245,6 +277,22 @@ function App() {
       <section className="layout">
         <aside className="panel">
           <h2>Control Panel</h2>
+
+          <label className="scenario-label" htmlFor="scenario-select">
+            Scenario
+          </label>
+          <select
+            id="scenario-select"
+            className="scenario-select"
+            value={selectedScenarioId}
+            onChange={(event) => resetToScenario(event.target.value)}
+          >
+            {scenarioList.map((item) => (
+              <option value={item.id} key={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </select>
 
           <div className="button-row">
             <button onClick={handleStart}>Start Fleet</button>
@@ -262,6 +310,26 @@ function App() {
               <li>Obstacles: {scenario.obstacles.length}</li>
               <li>Tick: {currentTick}</li>
             </ul>
+          </div>
+
+          <div className="info-block">
+            <h3>Global Arbiter</h3>
+            <div
+              className={
+                arbiterReport.approved
+                  ? "arbiter-card approved"
+                  : "arbiter-card rejected"
+              }
+            >
+              <strong>{arbiterReport.approved ? "APPROVED" : "NOT APPROVED YET"}</strong>
+              <ul>
+                <li>Checked ticks: {arbiterReport.checkedTicks}</li>
+                <li>Cell collisions: {arbiterReport.cellCollisionCount}</li>
+                <li>Edge swaps: {arbiterReport.edgeSwapCount}</li>
+                <li>Blocked cells: {arbiterReport.blockedCellCount}</li>
+                <li>Out of bounds: {arbiterReport.outOfBoundsCount}</li>
+              </ul>
+            </div>
           </div>
 
           <div className="info-block">
@@ -286,6 +354,15 @@ function App() {
             <h3>System Log</h3>
             <div className="log-box">
               {systemLog.map((log, index) => (
+                <p key={`${log}-${index}`}>{log}</p>
+              ))}
+            </div>
+          </div>
+
+          <div className="info-block">
+            <h3>Arbiter Log</h3>
+            <div className="log-box arbiter-log">
+              {arbiterReport.messages.map((log, index) => (
                 <p key={`${log}-${index}`}>{log}</p>
               ))}
             </div>
