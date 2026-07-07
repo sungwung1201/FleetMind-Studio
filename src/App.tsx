@@ -3469,11 +3469,71 @@ function App() {
                   ))
               : null}
 
-            {activeLogTab === "dataset"
-              ? datasetLog.map((log, index) => (
-                  <p key={`${log}-${index}`}>{log}</p>
-                ))
-              : null}
+            {activeLogTab === "dataset" ? (
+              <div className="dataset-viewer">
+                {latestDataset ? (
+                  <>
+                    <div className="dataset-summary-grid">
+                      <div>
+                        <span>Episodes</span>
+                        <strong>{latestDataset.summary.episode_count}</strong>
+                      </div>
+                      <div>
+                        <span>Success</span>
+                        <strong>{latestDataset.summary.success_count}</strong>
+                      </div>
+                      <div>
+                        <span>AMRs</span>
+                        <strong>{latestDataset.summary.amr_count}</strong>
+                      </div>
+                      <div>
+                        <span>Ticks</span>
+                        <strong>{latestDataset.summary.checked_ticks}</strong>
+                      </div>
+                    </div>
+
+                    <div className="dataset-table-wrap">
+                      <table className="dataset-table">
+                        <thead>
+                          <tr>
+                            <th>Episode</th>
+                            <th>AMR</th>
+                            <th>Goal</th>
+                            <th>Steps</th>
+                            <th>Duration</th>
+                            <th>Success</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {latestDataset.episodes.map((episode) => (
+                            <tr key={episode.episode_id}>
+                              <td>{episode.episode_id}</td>
+                              <td>{episode.amr_id}</td>
+                              <td>
+                                {episode.goal_cell
+                                  ? `[${episode.goal_cell[0]},${episode.goal_cell[1]}]`
+                                  : "-"}
+                              </td>
+                              <td>{episode.trajectory.length}</td>
+                              <td>{Math.round(episode.duration_ms)}ms</td>
+                              <td>{episode.success ? "true" : "false"}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                ) : (
+                  <p>No dataset exported yet. Click Dataset &gt; Export first.</p>
+                )}
+
+                <div className="dataset-log-list">
+                  {datasetLog.map((log, index) => (
+                    <p key={`${log}-${index}`}>{log}</p>
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </div>
         </section>
       <aside className={`fixed-agent-panel tab-${rightPanelTab}`} style={{ width: agentPanelWidth }}>

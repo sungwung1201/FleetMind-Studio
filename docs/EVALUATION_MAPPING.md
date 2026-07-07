@@ -78,3 +78,13 @@ Implemented:
 - Strict order preservation for “먼저 / 갔다가 / 후에”
 - JSON route command
 - Deterministic no-key parser
+
+
+## Additional Could-Have Evidence
+
+FleetMind Studio also includes a one-page data collection business model:
+
+- `docs/DATA_COLLECTION_BUSINESS_MODEL.md`
+
+This supports the optional business-model track by explaining how AMR simulation episodes can become reusable synthetic data assets for factory automation, AMR PoC validation, and robotics AI development.
+

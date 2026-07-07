@@ -3944,3 +3944,72 @@ h1 {
   transform: scale(0.72);
   transform-origin: center;
 }
+
+/* Dataset Viewer: episode table evidence for Studio UI / UX scoring. */
+.dataset-viewer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: inherit;
+}
+
+.dataset-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(90px, 1fr));
+  gap: 8px;
+}
+
+.dataset-summary-grid > div {
+  border: 1px solid rgba(31, 56, 100, 0.18);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: rgba(31, 56, 100, 0.06);
+}
+
+.dataset-summary-grid span {
+  display: block;
+  font-size: 11px;
+  opacity: 0.72;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dataset-summary-grid strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 18px;
+}
+
+.dataset-table-wrap {
+  overflow: auto;
+  max-height: 220px;
+  border: 1px solid rgba(31, 56, 100, 0.16);
+  border-radius: 12px;
+}
+
+.dataset-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.dataset-table th,
+.dataset-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(31, 56, 100, 0.1);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.dataset-table th {
+  position: sticky;
+  top: 0;
+  background: #f6f8fc;
+  color: #1f3864;
+  font-weight: 700;
+}
+
+.dataset-log-list {
+  border-top: 1px dashed rgba(31, 56, 100, 0.18);
+  padding-top: 8px;
+}
