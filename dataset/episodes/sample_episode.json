@@ -1,0 +1,539 @@
+{
+  "dataset_id": "sample_dataset_default",
+  "generated_at": "2026-07-07T19:21:55Z",
+  "assignment": "VISIONSPACE_TESSERACT_ROBOT_TRACK",
+  "scenario_id": "default",
+  "scenario_name": "Default Fleet Scenario",
+  "summary": {
+    "amr_count": 3,
+    "episode_count": 3,
+    "success_count": 3,
+    "total_collisions_detected": 0,
+    "total_edge_swaps_detected": 0,
+    "checked_ticks": 12
+  },
+  "episodes": [
+    {
+      "episode_id": "sample_ep_AMR_01",
+      "scenario_id": "default",
+      "scenario_name": "Default Fleet Scenario",
+      "amr_id": "AMR_01",
+      "task": "MOVE",
+      "agent_decision": null,
+      "start_cell": [
+        1,
+        1
+      ],
+      "goal_cell": [
+        10,
+        8
+      ],
+      "trajectory": [
+        {
+          "t": 0,
+          "cell": [
+            1,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 1,
+          "cell": [
+            2,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 2,
+          "cell": [
+            3,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 3,
+          "cell": [
+            4,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 4,
+          "cell": [
+            5,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 5,
+          "cell": [
+            6,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 6,
+          "cell": [
+            7,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 7,
+          "cell": [
+            8,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 8,
+          "cell": [
+            9,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 9,
+          "cell": [
+            10,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 10,
+          "cell": [
+            10,
+            2
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 11,
+          "cell": [
+            10,
+            3
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 12,
+          "cell": [
+            10,
+            4
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 13,
+          "cell": [
+            10,
+            5
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 14,
+          "cell": [
+            10,
+            6
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 15,
+          "cell": [
+            10,
+            7
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 16,
+          "cell": [
+            10,
+            8
+          ],
+          "status": "DONE"
+        }
+      ],
+      "reservation_log": [],
+      "collisions_avoided": 0,
+      "duration_ms": 3520,
+      "success": true
+    },
+    {
+      "episode_id": "sample_ep_AMR_02",
+      "scenario_id": "default",
+      "scenario_name": "Default Fleet Scenario",
+      "amr_id": "AMR_02",
+      "task": "MOVE",
+      "agent_decision": null,
+      "start_cell": [
+        3,
+        1
+      ],
+      "goal_cell": [
+        14,
+        8
+      ],
+      "trajectory": [
+        {
+          "t": 0,
+          "cell": [
+            3,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 1,
+          "cell": [
+            4,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 2,
+          "cell": [
+            5,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 3,
+          "cell": [
+            6,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 4,
+          "cell": [
+            7,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 5,
+          "cell": [
+            8,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 6,
+          "cell": [
+            9,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 7,
+          "cell": [
+            10,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 8,
+          "cell": [
+            11,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 9,
+          "cell": [
+            12,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 10,
+          "cell": [
+            13,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 11,
+          "cell": [
+            14,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 12,
+          "cell": [
+            14,
+            2
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 13,
+          "cell": [
+            14,
+            3
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 14,
+          "cell": [
+            14,
+            4
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 15,
+          "cell": [
+            14,
+            5
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 16,
+          "cell": [
+            14,
+            6
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 17,
+          "cell": [
+            14,
+            7
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 18,
+          "cell": [
+            14,
+            8
+          ],
+          "status": "DONE"
+        }
+      ],
+      "reservation_log": [],
+      "collisions_avoided": 0,
+      "duration_ms": 3960,
+      "success": true
+    },
+    {
+      "episode_id": "sample_ep_AMR_03",
+      "scenario_id": "default",
+      "scenario_name": "Default Fleet Scenario",
+      "amr_id": "AMR_03",
+      "task": "MOVE",
+      "agent_decision": null,
+      "start_cell": [
+        5,
+        1
+      ],
+      "goal_cell": [
+        18,
+        8
+      ],
+      "trajectory": [
+        {
+          "t": 0,
+          "cell": [
+            5,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 1,
+          "cell": [
+            6,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 2,
+          "cell": [
+            7,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 3,
+          "cell": [
+            8,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 4,
+          "cell": [
+            9,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 5,
+          "cell": [
+            10,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 6,
+          "cell": [
+            11,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 7,
+          "cell": [
+            12,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 8,
+          "cell": [
+            13,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 9,
+          "cell": [
+            14,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 10,
+          "cell": [
+            15,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 11,
+          "cell": [
+            16,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 12,
+          "cell": [
+            17,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 13,
+          "cell": [
+            18,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 14,
+          "cell": [
+            18,
+            2
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 15,
+          "cell": [
+            18,
+            3
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 16,
+          "cell": [
+            18,
+            4
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 17,
+          "cell": [
+            18,
+            5
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 18,
+          "cell": [
+            18,
+            6
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 19,
+          "cell": [
+            18,
+            7
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 20,
+          "cell": [
+            18,
+            8
+          ],
+          "status": "DONE"
+        }
+      ],
+      "reservation_log": [],
+      "collisions_avoided": 0,
+      "duration_ms": 4400,
+      "success": true
+    }
+  ]
+}

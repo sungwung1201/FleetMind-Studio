@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, react-hooks/exhaustive-deps, react-hooks/set-state-in-effect */
 import { useEffect, useMemo, useState, useRef } from "react";
 import "./App.css";
 import type { AgentDecision, AMR, EpisodeDataset, Scenario } from "./core/types";
@@ -103,7 +104,7 @@ function App() {
     "select" | "add" | "delete"
   >("select");
   const [addTarget, setAddTarget] = useState<
-    "none" | "none" | "amr" | "workstation" | "goal" | "wall" | "wall"
+    "none" | "amr" | "workstation" | "goal" | "wall"
   >("none");
   const [objectBuilderMode, setObjectBuilderMode] = useState<
     "amr" | "workstation" | "obstacle" | "goal"
@@ -1003,68 +1004,40 @@ function App() {
     });
   };
 
+
   const handleExportDataset = () => {
-    const dataset = {
-      version: "robot-fleet-web-studio.dataset.v1",
-      exportedAt: new Date().toISOString(),
+    const dataset = createEpisodeDataset({
       scenario,
       agentDecisions,
+      reservationEvents,
       arbiterReport,
-      currentTick,
-    };
-
-    setLatestDataset(dataset as any);
-    setDatasetLog((prev) => [
-      `[dataset] Exported JSON dataset at ${dataset.exportedAt}.`,
-      ...prev,
-    ].slice(0, 20));
-
-    const blob = new Blob([JSON.stringify(dataset, null, 2)], {
-      type: "application/json",
     });
 
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = `fleet_dataset_${Date.now()}.json`;
-    anchor.click();
-    URL.revokeObjectURL(url);
+    const validation = validateEpisodeDataset(dataset);
+
+    setLatestDataset(dataset);
+    setDatasetLog((prev) => [
+      `[dataset] Exported ${dataset.episodes.length} episode(s). ${validation.messages[0] ?? ""}`,
+      ...prev,
+    ].slice(0, 20));
+
+    downloadJsonFile(`fleet_dataset_${Date.now()}.json`, dataset);
   };
 
+
   const handleExportSnapshot = () => {
-    const grid = document.querySelector(".grid-canvas");
-
-    if (!(grid instanceof HTMLElement)) {
-      setDatasetLog((prev) => [
-        "[snapshot] Grid canvas not found.",
-        ...prev,
-      ].slice(0, 20));
-      return;
-    }
-
-    const rect = grid.getBoundingClientRect();
-    const svg = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="${Math.max(1, rect.width)}" height="${Math.max(1, rect.height)}">
-        <rect width="100%" height="100%" fill="#f8fafc"/>
-        <text x="20" y="32" font-size="18" font-family="Arial" fill="#0f172a">Robot Fleet Web Studio Snapshot</text>
-        <text x="20" y="62" font-size="13" font-family="Arial" fill="#475467">Scenario: ${scenario.name}</text>
-        <text x="20" y="88" font-size="13" font-family="Arial" fill="#475467">AMR: ${scenario.amrs.length}, WS: ${scenario.workstations.length}, OBS: ${scenario.obstacles.length}</text>
-      </svg>
-    `;
-
-    const blob = new Blob([svg], { type: "image/svg+xml" });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = `fleet_snapshot_${Date.now()}.svg`;
-    anchor.click();
-    URL.revokeObjectURL(url);
+    createSnapshotPng(
+      scenario,
+      `fleet_snapshot_${Date.now()}.png`,
+      Math.max(24, Math.min(48, cellSize))
+    );
 
     setDatasetLog((prev) => [
-      "[snapshot] SVG snapshot exported.",
+      "[snapshot] PNG snapshot exported.",
       ...prev,
     ].slice(0, 20));
   };
+
 
   const handleValidateDataset = () => {
     const errors: string[] = [];
@@ -1085,31 +1058,31 @@ function App() {
       errors.push("At least 5 obstacles are recommended for the default requirement.");
     }
 
-    if (errors.length === 0) {
+    const dataset = latestDataset ?? createEpisodeDataset({
+      scenario,
+      agentDecisions,
+      reservationEvents,
+      arbiterReport,
+    });
+    const datasetValidation = validateEpisodeDataset(dataset);
+
+    if (errors.length === 0 && datasetValidation.ok) {
       setDatasetLog((prev) => [
-        "[validate] PASS: scenario satisfies base requirement checks.",
+        `[validate] PASS: scenario and dataset are valid. ${datasetValidation.messages[0]}`,
         ...prev,
       ].slice(0, 20));
       return;
     }
 
     setDatasetLog((prev) => [
-      `[validate] WARN: ${errors.join(" ")}`,
+      `[validate] WARN: ${[...errors, ...datasetValidation.messages].join(" ")}`,
       ...prev,
     ].slice(0, 20));
   };
 
-  const handleExportScenario = () => {
-    const blob = new Blob([JSON.stringify(scenario, null, 2)], {
-      type: "application/json",
-    });
 
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = `${scenario.name || "scenario"}_${Date.now()}.json`;
-    anchor.click();
-    URL.revokeObjectURL(url);
+  const handleExportScenario = () => {
+    downloadScenarioJson(scenario);
 
     setSystemLog((prev) => [
       `[scenario] Exported ${scenario.name}.`,
@@ -1117,32 +1090,42 @@ function App() {
     ].slice(0, 20));
   };
 
+
   const handleImportScenario = async (file: File | null) => {
     if (!file) {
       return;
     }
 
-    try {
-      const text = await file.text();
-      const parsed = JSON.parse(text) as Scenario;
+    const result = await readScenarioFile(file);
 
-      setScenarioHistory((prev) => [cloneScenario(scenario), ...prev].slice(0, 30));
-      setRedoStack([]);
-      setScenario(cloneScenario(parsed));
-      setSelectedStudioObject(null);
-      setCurrentTick(0);
-      setIsRunning(false);
-
+    if (!result.ok || !result.scenario) {
       setSystemLog((prev) => [
-        `[scenario] Imported ${parsed.name ?? file.name}.`,
+        `[scenario] Import failed: ${result.error ?? "Unknown scenario import error."}`,
         ...prev,
       ].slice(0, 20));
-    } catch (error) {
-      setSystemLog((prev) => [
-        `[scenario] Import failed: ${error instanceof Error ? error.message : String(error)}`,
-        ...prev,
-      ].slice(0, 20));
+      return;
     }
+
+    const importedScenario = result.scenario;
+
+    setCustomScenario(importedScenario);
+    setSelectedScenarioId(importedScenario.id);
+    setScenarioHistory((prev) => [cloneScenario(scenario), ...prev].slice(0, 30));
+    setRedoStack([]);
+    setScenario(cloneScenario(importedScenario));
+    setSelectedStudioObject(null);
+    setCurrentTick(0);
+    setIsRunning(false);
+    setAgentDecisions([]);
+    setReservationEvents([]);
+    setReservationLog([]);
+    setLatestDataset(null);
+    setArbiterReport(getEmptyArbiterReport());
+
+    setSystemLog((prev) => [
+      `[scenario] Imported ${importedScenario.name}.`,
+      ...prev,
+    ].slice(0, 20));
   };
 
   const repairBuildManhattanPath = (
@@ -1217,7 +1200,7 @@ function App() {
 
       reservationTable.reservePath(amr.id, path);
 
-      const cost = getPathCostReport(amr, amr.goalCell);
+      const cost = getPathCostReport({ ...amr, path }, amr.goalCell);
 
       planningLog.push(
         `[planner] ${amr.id}: Time A* path=${path.length}, strategy=${cost.selectedStrategy}, wait=${cost.waitSteps}, detour=${cost.detourSteps}.`
@@ -2508,27 +2491,14 @@ function App() {
         <section className="rail-card">
           <p className="rail-card-title">Scenario</p>
           <select
-            value={scenario.id}
+            value={selectedScenarioId}
             onChange={(event) => {
-              const selectedScenario = scenarioList.find(
-                (item) => item.id === event.target.value
-              ) as unknown as Scenario | undefined;
-
-              if (!selectedScenario) {
-                return;
-              }
-
-              setScenario(cloneScenario(selectedScenario));
-              setCurrentTick(0);
-              setIsRunning(false);
-              setAgentDecisions([]);
-              setAgentLog(["Scenario changed from left rail."]);
-              setSystemLog((prev) => [
-                `[scenario] Loaded ${selectedScenario.name}.`,
-                ...prev,
-              ].slice(0, 20));
+              resetToScenario(event.target.value);
             }}
           >
+            {customScenario ? (
+              <option value={customScenario.id}>{customScenario.name}</option>
+            ) : null}
             {scenarioList.map((item) => (
               <option key={item.id} value={item.id}>
                 {item.name}
