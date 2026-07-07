@@ -1,4 +1,4 @@
-# Robot Fleet Web Studio
+# FleetMind Studio
 
 VISIONSPACE TESSERACT 과제용 **웹 기반 AMR Fleet 시뮬레이션 스튜디오**다. 20x20 이상 Grid에서 AMR, Workstation, Obstacle, Goal을 직접 편집하고, 자연어/JSON 명령으로 다중 AMR 작업을 배정한 뒤 **Time A\, Reservation Table, Global Arbiter** 기반으로 경로를 생성·검증·재생한다.
 
