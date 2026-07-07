@@ -181,7 +181,7 @@ src/dataset/snapshotExporter.ts     PNG snapshot 생성
 src/scenarios/scenarioIO.ts         Scenario export/import
 ```
 
-## 9. 제출 체크리스트
+## 9. Project Checklist
 
 - [x] 20x20 이상 Grid
 - [x] AMR 3대 이상
@@ -198,10 +198,21 @@ src/scenarios/scenarioIO.ts         Scenario export/import
 - [x] PNG snapshot export
 - [x] validate script 및 샘플 dataset
 - [x] Default / Edge Swap / Bottleneck / No Path 증거 시나리오
-- [x] README 평가 기준 대응표
-- [x] 데모 영상용 시나리오 가이드
+- [x] Project requirement mapping
+- [x] Demo scenario guide
 
 ## AI Tool Usage
 
-ChatGPT was used as a development assistant for code review, debugging strategy, documentation drafting, and evaluation-mapping refinement. Core implementation decisions, scenario testing, local validation, and final integration were performed by the developer.
+ChatGPT was used as a development assistant during the project, but the implementation was not submitted as unreviewed AI-generated code.
+
+AI assistance was used for:
+- reviewing TypeScript/React code structure
+- debugging planner, reservation, and arbiter edge cases
+- organizing README and documentation
+- preparing evaluation-mapping and demo-script documentation
+- refining scenario validation and submission evidence
+
+The developer performed the core implementation decisions, local testing, scenario validation, UI integration, GitHub deployment, Vercel deployment, and final verification.
+
+FleetMind Studio uses a deterministic rule-based Agent instead of exposing external LLM API keys in the frontend. This keeps the public demo reproducible, safe to deploy, and free from API-key leakage risk.
 
