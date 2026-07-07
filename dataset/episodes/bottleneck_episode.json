@@ -1,7 +1,7 @@
 {
   "dataset_id": "dataset_bottleneck_wait_test_submission_evidence",
   "generated_at": "2026-07-07T19:40:00.000Z",
-  "assignment": "VISIONSPACE_TESSERACT_ROBOT_TRACK",
+  "assignment": "FLEETMIND_STUDIO_FLEET_PLANNING",
   "scenario_id": "bottleneck_wait_test",
   "scenario_name": "Bottleneck Wait vs Detour Scenario",
   "summary": {

@@ -1,7 +1,7 @@
 {
   "dataset_id": "dataset_no_path_blocked_target_submission_evidence",
   "generated_at": "2026-07-07T19:40:00.000Z",
-  "assignment": "VISIONSPACE_TESSERACT_ROBOT_TRACK",
+  "assignment": "FLEETMIND_STUDIO_FLEET_PLANNING",
   "scenario_id": "no_path_blocked_target",
   "scenario_name": "No Path / Blocked Target Scenario",
   "summary": {
