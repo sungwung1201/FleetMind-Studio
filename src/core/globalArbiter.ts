@@ -65,11 +65,14 @@ function reverseEdgeKey(from: Cell, to: Cell): string {
 }
 
 function isAllowedGoalFootprint(amr: AMR, cell: Cell): boolean {
-  if (!amr.goalCell) {
-    return false;
+  if (amr.goalCell && sameCell(amr.goalCell, cell)) {
+    return true;
   }
 
-  return sameCell(amr.goalCell, cell);
+  const routeGoalCells =
+    (amr as AMR & { routeGoalCells?: Cell[] }).routeGoalCells ?? [];
+
+  return routeGoalCells.some((routeGoalCell) => sameCell(routeGoalCell, cell));
 }
 
 export function validateFleetPlan(scenario: Scenario): ArbiterReport {

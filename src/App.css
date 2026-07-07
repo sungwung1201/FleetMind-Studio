@@ -3933,3 +3933,14 @@ h1 {
 .final-build-toolbar-group button {
   min-width: 58px;
 }
+
+/* AMR visual clearance: smaller robot icon to reduce visual overlap in adjacent-cell motion. */
+.amr,
+.robot,
+.amr-node,
+.robot-node,
+.grid-amr,
+.fleet-amr {
+  transform: scale(0.72);
+  transform-origin: center;
+}

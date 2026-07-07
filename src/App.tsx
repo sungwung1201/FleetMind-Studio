@@ -7,7 +7,7 @@ import { ReservationTable, type ReservationEvent } from "./core/reservationTable
 import { findPathTimeAStar } from "./core/timeAstar";
 import { validateFleetPlan, type ArbiterReport } from "./core/globalArbiter";
 import { getPathCostReport } from "./core/pathCost";
-import { runTaskAgent } from "./core/taskAgent";
+import { runTaskAgent, type AgentRoute } from "./core/taskAgent";
 import {
   createEpisodeDataset,
   downloadJsonFile,
@@ -74,6 +74,492 @@ function getEmptyArbiterReport(): ArbiterReport {
     messages: ["No Global Arbiter validation yet."],
   };
 }
+
+
+function getMultiRouteCostReport(
+  startCell: { x: number; y: number },
+  routeGoalCells: Array<{ x: number; y: number }>,
+  path: Array<{ x: number; y: number; t: number }>
+) {
+  let staticRouteDistance = 0;
+  let cursor = startCell;
+
+  for (const waypoint of routeGoalCells) {
+    staticRouteDistance +=
+      Math.abs(cursor.x - waypoint.x) + Math.abs(cursor.y - waypoint.y);
+    cursor = waypoint;
+  }
+
+  let waitSteps = 0;
+  let moveSteps = 0;
+
+  for (let i = 1; i < path.length; i += 1) {
+    if (path[i - 1].x === path[i].x && path[i - 1].y === path[i].y) {
+      waitSteps += 1;
+    } else {
+      moveSteps += 1;
+    }
+  }
+
+  const detourSteps = Math.max(0, moveSteps - staticRouteDistance);
+
+  let strategy: "DIRECT" | "WAIT" | "DETOUR" | "WAIT_BIASED" | "DETOUR_BIASED" =
+    "DIRECT";
+
+  if (waitSteps > 0 && detourSteps > 0) {
+    strategy = waitSteps <= detourSteps ? "WAIT_BIASED" : "DETOUR_BIASED";
+  } else if (waitSteps > 0) {
+    strategy = "WAIT";
+  } else if (detourSteps > 0) {
+    strategy = "DETOUR";
+  }
+
+  return {
+    staticRouteDistance,
+    moveSteps,
+    waitSteps,
+    detourSteps,
+    strategy,
+  };
+}
+
+
+
+type RouteOrderCandidate = {
+  amrId: string;
+  waypoints: string[];
+  source?: string;
+};
+
+function isRouteOrderForced(commandInput: string): boolean {
+  return /(먼저|갔다가|갔다\s*가|후에|그다음|다음|순서대로|입력\s*순서|정해진\s*순서)/i.test(
+    commandInput
+  );
+}
+
+function shouldOptimizeRouteOrder(commandInput: string): boolean {
+  if (isRouteOrderForced(commandInput)) {
+    return false;
+  }
+
+  return /(가까운\s*순서|최적\s*순서|효율|효율적|짧은\s*순서|최단\s*순서|가장\s*가까운|nearest\s*order|optimi[sz]e)/i.test(
+    commandInput
+  );
+}
+
+function getRouteOrderDistance(
+  startCell: { x: number; y: number },
+  waypoints: string[],
+  workstationMap: Map<string, { cell: { x: number; y: number } }>
+): number {
+  let total = 0;
+  let cursor = startCell;
+
+  for (const waypointId of waypoints) {
+    const waypoint = workstationMap.get(waypointId);
+
+    if (!waypoint) {
+      total += 9999;
+      continue;
+    }
+
+    total +=
+      Math.abs(cursor.x - waypoint.cell.x) +
+      Math.abs(cursor.y - waypoint.cell.y);
+
+    cursor = waypoint.cell;
+  }
+
+  return total;
+}
+
+function permuteRouteOrder(items: string[]): string[][] {
+  if (items.length <= 1) {
+    return [items];
+  }
+
+  const result: string[][] = [];
+
+  items.forEach((item, index) => {
+    const rest = [...items.slice(0, index), ...items.slice(index + 1)];
+
+    for (const permutation of permuteRouteOrder(rest)) {
+      result.push([item, ...permutation]);
+    }
+  });
+
+  return result;
+}
+
+function optimizeWaypointOrderForAmr(
+  startCell: { x: number; y: number },
+  waypoints: string[],
+  workstationMap: Map<string, { cell: { x: number; y: number } }>
+): {
+  waypoints: string[];
+  distance: number;
+  originalDistance: number;
+} {
+  const uniqueWaypoints = [...new Set(waypoints)];
+  const originalDistance = getRouteOrderDistance(
+    startCell,
+    uniqueWaypoints,
+    workstationMap
+  );
+
+  if (uniqueWaypoints.length <= 1) {
+    return {
+      waypoints: uniqueWaypoints,
+      distance: originalDistance,
+      originalDistance,
+    };
+  }
+
+  const candidates =
+    uniqueWaypoints.length <= 7
+      ? permuteRouteOrder(uniqueWaypoints)
+      : (() => {
+          const remaining = [...uniqueWaypoints];
+          const ordered: string[] = [];
+          let cursor = startCell;
+
+          while (remaining.length > 0) {
+            remaining.sort((a, b) => {
+              const aCell = workstationMap.get(a)?.cell;
+              const bCell = workstationMap.get(b)?.cell;
+
+              if (!aCell || !bCell) {
+                return 0;
+              }
+
+              const aDistance =
+                Math.abs(cursor.x - aCell.x) + Math.abs(cursor.y - aCell.y);
+              const bDistance =
+                Math.abs(cursor.x - bCell.x) + Math.abs(cursor.y - bCell.y);
+
+              return aDistance - bDistance;
+            });
+
+            const next = remaining.shift();
+
+            if (!next) {
+              break;
+            }
+
+            ordered.push(next);
+
+            const nextCell = workstationMap.get(next)?.cell;
+            if (nextCell) {
+              cursor = nextCell;
+            }
+          }
+
+          return [ordered];
+        })();
+
+  const best = candidates
+    .map((candidate) => ({
+      waypoints: candidate,
+      distance: getRouteOrderDistance(startCell, candidate, workstationMap),
+    }))
+    .sort((a, b) => a.distance - b.distance)[0];
+
+  return {
+    waypoints: best?.waypoints ?? uniqueWaypoints,
+    distance: best?.distance ?? originalDistance,
+    originalDistance,
+  };
+}
+
+function buildRouteOrderOptimizedRoutes(
+  routes: RouteOrderCandidate[],
+  commandInput: string,
+  scenario: Scenario,
+  workstationMap: Map<string, { cell: { x: number; y: number } }>,
+  planningLog: string[]
+): RouteOrderCandidate[] {
+  if (!shouldOptimizeRouteOrder(commandInput)) {
+    return routes;
+  }
+
+  return routes.map((route) => {
+    const amr = scenario.amrs.find((item) => item.id === route.amrId);
+
+    if (!amr || route.waypoints.length <= 1) {
+      return route;
+    }
+
+    const optimized = optimizeWaypointOrderForAmr(
+      amr.cell,
+      route.waypoints,
+      workstationMap
+    );
+
+    const changed = optimized.waypoints.join("->") !== route.waypoints.join("->");
+
+    planningLog.push(
+      changed
+        ? `[agent] Route order optimized for ${route.amrId}: ${route.waypoints.join(
+            " -> "
+          )} → ${optimized.waypoints.join(" -> ")}. distance ${
+            optimized.originalDistance
+          } → ${optimized.distance}.`
+        : `[agent] Route order checked for ${route.amrId}: ${route.waypoints.join(
+            " -> "
+          )}. distance=${optimized.distance}.`
+    );
+
+    return {
+      ...route,
+      waypoints: optimized.waypoints,
+      source: `${route.source ?? "natural_language"}+route_order_optimizer`,
+    };
+  });
+}
+
+
+
+function moveFootprintWithCell(
+  previousCell: { x: number; y: number },
+  nextCell: { x: number; y: number },
+  footprint?: Array<{ x: number; y: number }>
+): Array<{ x: number; y: number }> {
+  const dx = nextCell.x - previousCell.x;
+  const dy = nextCell.y - previousCell.y;
+  const sourceFootprint =
+    footprint && footprint.length > 0 ? footprint : [previousCell];
+
+  return sourceFootprint.map((cell) => ({
+    x: cell.x + dx,
+    y: cell.y + dy,
+  }));
+}
+
+
+
+function reserveIdleAmrPositions(
+  scenario: Scenario,
+  reservationTable: ReservationTable,
+  activeAmrIds: Set<string>,
+  planningLog: string[],
+  horizonTicks = 180
+): void {
+  for (const amr of scenario.amrs) {
+    if (activeAmrIds.has(amr.id)) {
+      continue;
+    }
+
+    for (let t = 0; t <= horizonTicks; t += 1) {
+      reservationTable.reserveCell(
+        amr.id,
+        amr.cell,
+        t,
+        "idle_amr_static_hold"
+      );
+    }
+
+    planningLog.push(
+      `[reservation] ${amr.id}: idle position reserved at [${amr.cell.x},${amr.cell.y}] for t=0..${horizonTicks}.`
+    );
+  }
+}
+
+
+
+type SceneHealthReport = {
+  ok: boolean;
+  warningCount: number;
+  lines: string[];
+};
+
+function healthCellKey(cell: { x: number; y: number }): string {
+  return `${cell.x},${cell.y}`;
+}
+
+function isCellInsideScenario(
+  scenario: Scenario,
+  cell: { x: number; y: number }
+): boolean {
+  return (
+    cell.x >= 0 &&
+    cell.y >= 0 &&
+    cell.x < scenario.width &&
+    cell.y < scenario.height
+  );
+}
+
+function getSceneHealthReport(scenario: Scenario): SceneHealthReport {
+  const warnings: string[] = [];
+  const info: string[] = [];
+  const occupancy = new Map<string, string[]>();
+
+  const addOccupant = (cell: { x: number; y: number }, label: string) => {
+    const key = healthCellKey(cell);
+    const existing = occupancy.get(key) ?? [];
+    existing.push(label);
+    occupancy.set(key, existing);
+  };
+
+  scenario.amrs.forEach((amr) => {
+    addOccupant(amr.cell, `AMR:${amr.id}`);
+
+    if (!isCellInsideScenario(scenario, amr.cell)) {
+      warnings.push(`[health] WARN: ${amr.id} is outside the grid at [${amr.cell.x},${amr.cell.y}].`);
+    }
+  });
+
+  scenario.workstations.forEach((workstation) => {
+    addOccupant(workstation.cell, `WS:${workstation.id}`);
+
+    if (!isCellInsideScenario(scenario, workstation.cell)) {
+      warnings.push(`[health] WARN: ${workstation.id} is outside the grid at [${workstation.cell.x},${workstation.cell.y}].`);
+    }
+
+    const footprint = workstation.footprint ?? [];
+
+    if (footprint.length === 0) {
+      warnings.push(`[health] WARN: ${workstation.id} has empty footprint.`);
+    }
+
+    const includesCurrentCell = footprint.some(
+      (cell) => cell.x === workstation.cell.x && cell.y === workstation.cell.y
+    );
+
+    if (!includesCurrentCell) {
+      warnings.push(
+        `[health] WARN: ${workstation.id} footprint does not include current cell [${workstation.cell.x},${workstation.cell.y}].`
+      );
+    }
+
+    for (const cell of footprint) {
+      if (!isCellInsideScenario(scenario, cell)) {
+        warnings.push(`[health] WARN: ${workstation.id} footprint has out-of-grid cell [${cell.x},${cell.y}].`);
+      }
+    }
+  });
+
+  scenario.obstacles.forEach((obstacle) => {
+    addOccupant(obstacle.cell, `OBS:${obstacle.id}`);
+
+    if (!isCellInsideScenario(scenario, obstacle.cell)) {
+      warnings.push(`[health] WARN: ${obstacle.id} is outside the grid at [${obstacle.cell.x},${obstacle.cell.y}].`);
+    }
+  });
+
+  for (const [key, labels] of occupancy.entries()) {
+    if (labels.length > 1) {
+      warnings.push(`[health] WARN: duplicate cell ${key} occupied by ${labels.join(", ")}.`);
+    }
+  }
+
+  const obstacleCells = new Set(
+    scenario.obstacles.map((obstacle) => healthCellKey(obstacle.cell))
+  );
+
+  for (const workstation of scenario.workstations) {
+    const neighbors = [
+      { x: workstation.cell.x + 1, y: workstation.cell.y },
+      { x: workstation.cell.x - 1, y: workstation.cell.y },
+      { x: workstation.cell.x, y: workstation.cell.y + 1 },
+      { x: workstation.cell.x, y: workstation.cell.y - 1 },
+    ].filter((cell) => isCellInsideScenario(scenario, cell));
+
+    const openNeighbors = neighbors.filter(
+      (cell) => !obstacleCells.has(healthCellKey(cell))
+    );
+
+    if (neighbors.length > 0 && openNeighbors.length === 0) {
+      warnings.push(
+        `[health] WARN: ${workstation.id} appears fully blocked by obstacles. no-path fast-fail expected.`
+      );
+    }
+  }
+
+  if (scenario.width < 20 || scenario.height < 20) {
+    warnings.push(`[health] WARN: grid is ${scenario.width}x${scenario.height}; requirement target is at least 20x20.`);
+  }
+
+  if (scenario.amrs.length < 3) {
+    warnings.push(`[health] WARN: AMR count is ${scenario.amrs.length}; requirement target is at least 3.`);
+  }
+
+  if (scenario.workstations.length < 3) {
+    warnings.push(`[health] WARN: workstation count is ${scenario.workstations.length}; requirement target is at least 3.`);
+  }
+
+  if (scenario.obstacles.length < 5) {
+    warnings.push(`[health] WARN: obstacle count is ${scenario.obstacles.length}; recommended target is at least 5.`);
+  }
+
+  info.push(
+    `[health] Scene size=${scenario.width}x${scenario.height}, AMR=${scenario.amrs.length}, WS=${scenario.workstations.length}, OBS=${scenario.obstacles.length}.`
+  );
+
+  if (warnings.length === 0) {
+    return {
+      ok: true,
+      warningCount: 0,
+      lines: ["[health] PASS: no duplicate cells, no out-of-grid objects, no obvious blocked-target issue.", ...info],
+    };
+  }
+
+  return {
+    ok: false,
+    warningCount: warnings.length,
+    lines: [`[health] WARN: ${warnings.length} scene issue(s) detected.`, ...warnings, ...info],
+  };
+}
+
+function countWaitStepsInPath(path: Array<{ x: number; y: number; t: number }>): number {
+  let waitSteps = 0;
+
+  for (let i = 1; i < path.length; i += 1) {
+    if (path[i - 1].x === path[i].x && path[i - 1].y === path[i].y) {
+      waitSteps += 1;
+    }
+  }
+
+  return waitSteps;
+}
+
+function sumDetourFromPlanningLog(planningLog: string[]): number {
+  return planningLog.reduce((total, line) => {
+    const match = line.match(/detour=(\d+)/);
+    return total + (match ? Number(match[1]) : 0);
+  }, 0);
+}
+
+function buildPlanResultSummaryLine(
+  plannedAmrs: Array<{
+    id: string;
+    path: Array<{ x: number; y: number; t: number }>;
+    status: string;
+  }>,
+  planningLog: string[],
+  report: { approved?: boolean; message?: string }
+): string {
+  const plannedCount = plannedAmrs.filter((amr) => amr.path.length > 1).length;
+  const failedCount = planningLog.filter(
+    (line) =>
+      line.includes("failed route segment") ||
+      line.includes("no valid waypoint") ||
+      line.includes("explicit route had no valid waypoint")
+  ).length;
+
+  const waitSteps = plannedAmrs.reduce(
+    (total, amr) => total + countWaitStepsInPath(amr.path),
+    0
+  );
+
+  const detourSteps = sumDetourFromPlanningLog(planningLog);
+  const arbiterStatus =
+    report.approved === false || report.message?.includes("REJECTED")
+      ? "REJECTED"
+      : "APPROVED";
+
+  return `[summary] planned=${plannedCount}, failed=${failedCount}, wait=${waitSteps}, detour=${detourSteps}, arbiter=${arbiterStatus}.`;
+}
+
 
 function App() {
   const initialScenario = useMemo(() => cloneScenario(defaultScenario), []);
@@ -454,7 +940,7 @@ function App() {
       nextScenario.amrs = nextScenario.amrs.map((amr) => ({
         ...amr,
         path: [],
-        status: "IDLE",
+        status: "IDLE" as const,
       }));
 
       return nextScenario;
@@ -467,7 +953,7 @@ function App() {
         ...amr,
         id: `AMR_${String(index + 1).padStart(2, "0")}`,
         path: [],
-        status: "IDLE",
+        status: "IDLE" as const,
       }));
 
       nextScenario.workstations = nextScenario.workstations.map(
@@ -546,7 +1032,7 @@ function App() {
             startCell: cell,
             goalCell: undefined,
             path: [],
-            status: "IDLE",
+            status: "IDLE" as const,
             color: colors[nextScenario.amrs.length % colors.length],
           });
 
@@ -577,6 +1063,11 @@ function App() {
             ...template,
             id,
             cell,
+            footprint: moveFootprintWithCell(
+              template.cell,
+              cell,
+              template.footprint
+            ),
           });
 
           setSelectedStudioObject({ kind: "workstation", id });
@@ -641,7 +1132,7 @@ function App() {
                   ...amr,
                   goalCell: cell,
                   path: [],
-                  status: "IDLE",
+                  status: "IDLE" as const,
                 } as typeof amr)
               : amr
           );
@@ -743,7 +1234,7 @@ function App() {
                   cell,
                   startCell: cell,
                   path: [],
-                  status: "IDLE",
+                  status: "IDLE" as const,
                 }
               : amr
           );
@@ -966,7 +1457,7 @@ function App() {
       ...amr,
       id: `AMR_${String(index + 1).padStart(2, "0")}`,
       path: [],
-      status: "IDLE",
+      status: "IDLE" as const,
     }));
 
     nextScenario.workstations = nextScenario.workstations.map(
@@ -1058,28 +1549,33 @@ function App() {
       errors.push("At least 5 obstacles are recommended for the default requirement.");
     }
 
+    const sceneHealth = getSceneHealthReport(scenario);
+
     const dataset = latestDataset ?? createEpisodeDataset({
       scenario,
       agentDecisions,
       reservationEvents,
       arbiterReport,
     });
-    const datasetValidation = validateEpisodeDataset(dataset);
 
-    if (errors.length === 0 && datasetValidation.ok) {
+    const datasetValidation = validateEpisodeDataset(dataset);
+    const datasetMessages = datasetValidation.ok ? [] : datasetValidation.messages;
+
+    if (errors.length === 0 && datasetValidation.ok && sceneHealth.ok) {
       setDatasetLog((prev) => [
-        `[validate] PASS: scenario and dataset are valid. ${datasetValidation.messages[0]}`,
+        `[validate] PASS: scenario, scene health, and dataset are valid. ${datasetValidation.messages[0] ?? ""}`,
+        ...sceneHealth.lines,
         ...prev,
-      ].slice(0, 20));
+      ].slice(0, 30));
       return;
     }
 
     setDatasetLog((prev) => [
-      `[validate] WARN: ${[...errors, ...datasetValidation.messages].join(" ")}`,
+      `[validate] WARN: ${[...errors, ...datasetMessages].join(" ") || "scene health warning detected."}`,
+      ...sceneHealth.lines,
       ...prev,
-    ].slice(0, 20));
+    ].slice(0, 30));
   };
-
 
   const handleExportScenario = () => {
     downloadScenarioJson(scenario);
@@ -1164,14 +1660,161 @@ function App() {
     const reservationTable = new ReservationTable();
     const blockedCells = getBlockedCellKeys(nextScenario);
     const planningLog: string[] = [];
+    const workstationMap = new Map(
+      nextScenario.workstations.map((workstation) => [workstation.id, workstation])
+    );
 
-    nextScenario.amrs = nextScenario.amrs.map((amr) => {
+    const optimizedRoutes = buildRouteOrderOptimizedRoutes(
+      agentResult.routes ?? [],
+      commandInput,
+      nextScenario,
+      workstationMap,
+      planningLog
+    );
+
+    const activeAmrIds = new Set<string>([
+      ...optimizedRoutes.map((route) => route.amrId),
+      ...nextScenario.amrs
+        .filter((amr) => Boolean(amr.goalCell))
+        .map((amr) => amr.id),
+      ...(agentResult.decisions ?? [])
+        .filter((decision) => decision.decision === "ASSIGN")
+        .map((decision) => decision.amrId),
+    ]);
+
+    reserveIdleAmrPositions(
+      nextScenario,
+      reservationTable,
+      activeAmrIds,
+      planningLog,
+      180
+    );
+
+    const routeMap = new Map(
+      optimizedRoutes.map((route) => [route.amrId, route])
+    );
+
+    const routePlanningOrder = new Map(
+      optimizedRoutes.map((route, index) => [route.amrId, index])
+    );
+
+    const plannedAmrsByRoutePriority = [...nextScenario.amrs].sort((a, b) => {
+      const aOrder = routePlanningOrder.has(a.id)
+        ? routePlanningOrder.get(a.id)!
+        : Number.MAX_SAFE_INTEGER;
+      const bOrder = routePlanningOrder.has(b.id)
+        ? routePlanningOrder.get(b.id)!
+        : Number.MAX_SAFE_INTEGER;
+
+      return aOrder - bOrder;
+    });
+
+    const plannedAmrs = plannedAmrsByRoutePriority.map((amr) => {
+      const explicitRoute = routeMap.get(amr.id);
+
+      if (explicitRoute) {
+        let currentCell = { ...amr.cell };
+        let startTime = 0;
+        const routePath: typeof amr.path = [];
+        const routeLabels: string[] = [];
+        const routeGoalCells: { x: number; y: number }[] = [];
+
+        for (const waypointId of explicitRoute.waypoints) {
+          const waypoint = workstationMap.get(waypointId);
+
+          if (!waypoint) {
+            planningLog.push(`[planner] ${amr.id}: skipped unknown waypoint ${waypointId}.`);
+            continue;
+          }
+
+          routeGoalCells.push({
+            x: waypoint.cell.x,
+            y: waypoint.cell.y,
+          });
+
+          const segmentPath = findPathTimeAStar({
+            width: nextScenario.width,
+            height: nextScenario.height,
+            start: currentCell,
+            goal: waypoint.cell,
+            blockedCells,
+            reservationTable,
+            amrId: amr.id,
+            maxTime: 180,
+            startTime,
+          });
+
+          if (segmentPath.length === 0) {
+            planningLog.push(
+              `[planner] ${amr.id}: failed route segment ${routeLabels.length + 1} to ${waypoint.id} at [${waypoint.cell.x},${waypoint.cell.y}].`
+            );
+
+            return {
+              ...amr,
+              path: [],
+              status: "IDLE" as const,
+            };
+          }
+
+          // Do not reserve each segment here.
+          // Multi-route segments are merged and reserved once after the full route is built.
+
+          if (routePath.length === 0) {
+            routePath.push(...segmentPath);
+          } else {
+            routePath.push(...segmentPath.slice(1));
+          }
+
+          const lastCell = segmentPath[segmentPath.length - 1];
+          currentCell = {
+            x: lastCell.x,
+            y: lastCell.y,
+          };
+          startTime = lastCell.t;
+          routeLabels.push(waypoint.id);
+        }
+
+        if (routePath.length === 0 || routeLabels.length === 0) {
+          planningLog.push(`[planner] ${amr.id}: explicit route had no valid waypoint.`);
+          return {
+            ...amr,
+            path: [],
+            status: "IDLE" as const,
+          };
+        }
+
+        reservationTable.reservePath(amr.id, routePath);
+
+        const finalGoal = {
+          x: routePath[routePath.length - 1].x,
+          y: routePath[routePath.length - 1].y,
+        };
+
+        const routeCost = getMultiRouteCostReport(
+          amr.cell,
+          routeGoalCells,
+          routePath
+        );
+
+        planningLog.push(
+          `[planner] ${amr.id}: Multi-route ${routeLabels.join(" -> ")} path=${routePath.length}, route_shortest=${routeCost.staticRouteDistance}, strategy=${routeCost.strategy}, wait=${routeCost.waitSteps}, detour=${routeCost.detourSteps}.`
+        );
+
+        return {
+          ...amr,
+          goalCell: finalGoal,
+          routeGoalCells,
+          path: routePath,
+          status: "IDLE" as const,
+        };
+      }
+
       if (!amr.goalCell) {
         planningLog.push(`[planner] ${amr.id}: no goal assigned.`);
         return {
           ...amr,
           path: [],
-          status: "IDLE",
+          status: "IDLE" as const,
         };
       }
 
@@ -1194,7 +1837,7 @@ function App() {
         return {
           ...amr,
           path: [],
-          status: "IDLE",
+          status: "IDLE" as const,
         };
       }
 
@@ -1209,11 +1852,20 @@ function App() {
       return {
         ...amr,
         path,
-        status: "IDLE",
+        status: "IDLE" as const,
       };
     });
 
+    nextScenario.amrs = nextScenario.amrs.map((amr) => {
+      return plannedAmrs.find((plannedAmr) => plannedAmr.id === amr.id) ?? amr;
+    });
+
     const arbiterReport = validateFleetPlan(nextScenario);
+    const planSummaryLine = buildPlanResultSummaryLine(
+      plannedAmrs,
+      planningLog,
+      arbiterReport
+    );
 
     setScenario(nextScenario);
     setCurrentTick(0);
@@ -1221,20 +1873,23 @@ function App() {
 
     setAgentDecisions(agentResult.decisions);
     setAgentLog([
+      planSummaryLine,
       ...agentResult.logs,
       ...planningLog,
       arbiterReport.approved
         ? "[arbiter] APPROVED: no blocking fleet conflict detected."
         : "[arbiter] REJECTED: fleet conflict detected.",
       ...arbiterReport.messages,
-    ].slice(0, 80));
+    ].slice(0, 100));
 
     setReservationEvents(reservationTable.getEvents());
     setReservationLog(reservationTable.getSummaryLines(40));
     setArbiterReport(arbiterReport);
 
     setSystemLog((prev) => [
-      "[planner] Agent → Time A* → Reservation Table → Global Arbiter pipeline completed.",
+      agentResult.routes && agentResult.routes.length > 0
+        ? "[planner] Hybrid Rule Agent v2 → Multi-route Time A* → Reservation Table → Global Arbiter pipeline completed."
+        : "[planner] Agent → Time A* → Reservation Table → Global Arbiter pipeline completed.",
       ...prev,
     ].slice(0, 20));
   };
@@ -1343,12 +1998,12 @@ function App() {
                 cell: nextCell,
                 startCell: nextCell,
                 path: [],
-                status: "IDLE",
+                status: "IDLE" as const,
               }
             : {
                 ...amr,
                 path: [],
-                status: "IDLE",
+                status: "IDLE" as const,
               }
         );
       }
@@ -1360,6 +2015,11 @@ function App() {
               ? {
                   ...workstation,
                   cell: nextCell,
+                  footprint: moveFootprintWithCell(
+                    workstation.cell,
+                    nextCell,
+                    workstation.footprint
+                  ),
                 }
               : workstation
         );
@@ -1582,7 +2242,7 @@ function App() {
           ...amr,
           id: `AMR_${String(index + 1).padStart(2, "0")}`,
           path: [],
-          status: "IDLE",
+          status: "IDLE" as const,
         }));
 
         nextScenario.workstations = nextScenario.workstations.map(
@@ -1805,7 +2465,7 @@ function App() {
         nextScenario.amrs = nextScenario.amrs.map((amr) => ({
           ...amr,
           path: [],
-          status: "IDLE",
+          status: "IDLE" as const,
         }));
 
         if (target !== "goal" && isOccupied(nextScenario, cell)) {
@@ -1841,7 +2501,7 @@ function App() {
             startCell: cell,
             goalCell: undefined,
             path: [],
-            status: "IDLE",
+            status: "IDLE" as const,
             color: colors[nextScenario.amrs.length % colors.length],
           });
 
@@ -1867,6 +2527,11 @@ function App() {
             ...template,
             id,
             cell,
+            footprint: moveFootprintWithCell(
+              template.cell,
+              cell,
+              template.footprint
+            ),
           });
 
           setSelectedStudioObject({ kind: "workstation", id });
@@ -1921,7 +2586,7 @@ function App() {
                   ...amr,
                   goalCell: cell,
                   path: [],
-                  status: "IDLE",
+                  status: "IDLE" as const,
                 } as typeof amr)
               : amr
           );
@@ -2268,7 +2933,7 @@ function App() {
             if (!amr.path || amr.path.length === 0) {
               return {
                 ...amr,
-                status: "IDLE",
+                status: "IDLE" as const,
               };
             }
 
