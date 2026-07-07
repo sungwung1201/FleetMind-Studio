@@ -1,6 +1,6 @@
 # FleetMind Studio
 
-VISIONSPACE TESSERACT 과제용 **웹 기반 AMR Fleet 시뮬레이션 스튜디오**다. 20x20 이상 Grid에서 AMR, Workstation, Obstacle, Goal을 직접 편집하고, 자연어/JSON 명령으로 다중 AMR 작업을 배정한 뒤 **Time A\, Reservation Table, Global Arbiter** 기반으로 경로를 생성·검증·재생한다.
+FleetMind Studio **웹 기반 AMR Fleet 시뮬레이션 스튜디오**다. 20x20 이상 Grid에서 AMR, Workstation, Obstacle, Goal을 직접 편집하고, 자연어/JSON 명령으로 다중 AMR 작업을 배정한 뒤 **Time A\, Reservation Table, Global Arbiter** 기반으로 경로를 생성·검증·재생한다.
 
 <!-- SUBMISSION_LINKS_START -->
 
@@ -8,9 +8,9 @@ VISIONSPACE TESSERACT 과제용 **웹 기반 AMR Fleet 시뮬레이션 스튜디
 
 | Item | Link |
 |---|---|
-| Live Demo | TODO: add Vercel / Netlify / GitHub Pages URL |
+| Live Demo | https://fleet-mind-studio.vercel.app/ |
 | Demo Video | TODO: add video URL |
-| Source Code | TODO: add GitHub repository URL |
+| Source Code | https://github.com/sungwung1201/FleetMind-Studio |
 
 ## Submission Evidence Docs
 
@@ -200,3 +200,8 @@ src/scenarios/scenarioIO.ts         Scenario export/import
 - [x] Default / Edge Swap / Bottleneck / No Path 증거 시나리오
 - [x] README 평가 기준 대응표
 - [x] 데모 영상용 시나리오 가이드
+
+## AI Tool Usage
+
+ChatGPT was used as a development assistant for code review, debugging strategy, documentation drafting, and evaluation-mapping refinement. Core implementation decisions, scenario testing, local validation, and final integration were performed by the developer.
+
