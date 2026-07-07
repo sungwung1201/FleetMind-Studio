@@ -117,7 +117,7 @@ export function createEpisodeDataset(params: CreateDatasetParams): EpisodeDatase
   return {
     dataset_id: `dataset_${scenario.id}_${uuidv4()}`,
     generated_at: new Date().toISOString(),
-    assignment: "VISIONSPACE_TESSERACT_ROBOT_TRACK",
+    assignment: "FLEETMIND_STUDIO_FLEET_PLANNING",
     scenario_id: scenario.id,
     scenario_name: scenario.name,
     summary: {

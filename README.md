@@ -4,7 +4,7 @@ FleetMind Studio는 다중 AMR 작업 배정, Time A* 경로 계획, Reservation
 
 <!-- SUBMISSION_LINKS_START -->
 
-## Submission Links
+## Project Links
 
 | Item | Link |
 |---|---|
@@ -12,7 +12,7 @@ FleetMind Studio는 다중 AMR 작업 배정, Time A* 경로 계획, Reservation
 | Demo Video | TODO: add video URL |
 | Source Code | https://github.com/sungwung1201/FleetMind-Studio |
 
-## Submission Evidence Docs
+## Project Documentation
 
 - [Evaluation Mapping](docs/EVALUATION_MAPPING.md)
 - [3-Minute Demo Script](docs/DEMO_SCRIPT_3MIN.md)
@@ -36,7 +36,7 @@ npm run dev
 http://localhost:5173/
 ```
 
-제출 전 검증 명령은 다음 3개다.
+프로젝트 검증 명령은 다음 3개입니다.
 
 ```bash
 npm run build
@@ -61,7 +61,7 @@ validate PASS
 5. `Plan Only` 실행
 6. Agent Log, Reservation Log, Arbiter Log 확인
 7. `Start Fleet / Play`로 tick replay 확인
-8. `Dataset > Export / PNG / Validate`로 제출 증거 생성
+8. `Dataset > Export / PNG / Validate`로 실행 결과 데이터 생성
 
 ## 3. 자연어 / JSON 명령 예시
 

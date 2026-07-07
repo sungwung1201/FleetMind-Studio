@@ -3259,7 +3259,7 @@ function App() {
       </aside>
       <section className="hero">
         <div>
-          <p className="eyebrow">VISIONSPACE TESSERACT Assignment</p>
+          <p className="eyebrow">AI Fleet Planning Studio</p>
           <h1>FleetMind Studio</h1>
           <p className="subtitle">
             Step 6: Synthetic episode dataset export and validation.
