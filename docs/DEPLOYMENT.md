@@ -45,6 +45,6 @@ If deploying to GitHub Pages under a repository subpath, configure Vite `base` a
 ```ts
 // vite.config.ts
 export default defineConfig({
-  base: "/robot-fleet-web-studio/",
+  base: "/fleetmind-studio/",
 });
 ```

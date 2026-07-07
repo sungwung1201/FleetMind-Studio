@@ -1,0 +1,911 @@
+{
+  "dataset_id": "dataset_stress_6amr_submission_evidence",
+  "generated_at": "2026-07-07T22:49:28.496569+00:00",
+  "assignment": "6-AMR stress assignment evidence",
+  "scenario_id": "stress_6amr",
+  "scenario_name": "6-AMR Stress Evidence Scenario",
+  "summary": {
+    "amr_count": 6,
+    "episode_count": 6,
+    "success_count": 6,
+    "total_collisions_detected": 0,
+    "total_edge_swaps_detected": 0,
+    "checked_ticks": 5
+  },
+  "episodes": [
+    {
+      "episode_id": "ep_stress_6amr_amr_01",
+      "scenario_id": "stress_6amr",
+      "scenario_name": "6-AMR Stress Evidence Scenario",
+      "amr_id": "AMR_01",
+      "task": "MOVE",
+      "agent_decision": {
+        "taskId": "task_stress_6amr_001",
+        "amrId": "AMR_01",
+        "targetId": "W1",
+        "targetCell": {
+          "x": 6,
+          "y": 1
+        },
+        "reason": "stress_6amr_nearest_assignment_evidence",
+        "priority": 1,
+        "distance": 5,
+        "decision": "ASSIGN"
+      },
+      "start_cell": [
+        1,
+        1
+      ],
+      "goal_cell": [
+        6,
+        1
+      ],
+      "trajectory": [
+        {
+          "t": 0,
+          "cell": [
+            1,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 1,
+          "cell": [
+            2,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 2,
+          "cell": [
+            3,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 3,
+          "cell": [
+            4,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 4,
+          "cell": [
+            5,
+            1
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 5,
+          "cell": [
+            6,
+            1
+          ],
+          "status": "DONE"
+        }
+      ],
+      "reservation_log": [
+        {
+          "type": "CELL",
+          "amrId": "AMR_01",
+          "key": "1,1,0",
+          "t": 0
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_01",
+          "key": "2,1,1",
+          "t": 1
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_01",
+          "key": "1,1->2,1,1",
+          "t": 1
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_01",
+          "key": "3,1,2",
+          "t": 2
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_01",
+          "key": "2,1->3,1,2",
+          "t": 2
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_01",
+          "key": "4,1,3",
+          "t": 3
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_01",
+          "key": "3,1->4,1,3",
+          "t": 3
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_01",
+          "key": "5,1,4",
+          "t": 4
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_01",
+          "key": "4,1->5,1,4",
+          "t": 4
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_01",
+          "key": "6,1,5",
+          "t": 5
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_01",
+          "key": "5,1->6,1,5",
+          "t": 5
+        }
+      ],
+      "collisions_avoided": 0,
+      "duration_ms": 720,
+      "success": true
+    },
+    {
+      "episode_id": "ep_stress_6amr_amr_02",
+      "scenario_id": "stress_6amr",
+      "scenario_name": "6-AMR Stress Evidence Scenario",
+      "amr_id": "AMR_02",
+      "task": "MOVE",
+      "agent_decision": {
+        "taskId": "task_stress_6amr_002",
+        "amrId": "AMR_02",
+        "targetId": "W2",
+        "targetCell": {
+          "x": 6,
+          "y": 3
+        },
+        "reason": "stress_6amr_nearest_assignment_evidence",
+        "priority": 2,
+        "distance": 5,
+        "decision": "ASSIGN"
+      },
+      "start_cell": [
+        1,
+        3
+      ],
+      "goal_cell": [
+        6,
+        3
+      ],
+      "trajectory": [
+        {
+          "t": 0,
+          "cell": [
+            1,
+            3
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 1,
+          "cell": [
+            2,
+            3
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 2,
+          "cell": [
+            3,
+            3
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 3,
+          "cell": [
+            4,
+            3
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 4,
+          "cell": [
+            5,
+            3
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 5,
+          "cell": [
+            6,
+            3
+          ],
+          "status": "DONE"
+        }
+      ],
+      "reservation_log": [
+        {
+          "type": "CELL",
+          "amrId": "AMR_02",
+          "key": "1,3,0",
+          "t": 0
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_02",
+          "key": "2,3,1",
+          "t": 1
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_02",
+          "key": "1,3->2,3,1",
+          "t": 1
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_02",
+          "key": "3,3,2",
+          "t": 2
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_02",
+          "key": "2,3->3,3,2",
+          "t": 2
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_02",
+          "key": "4,3,3",
+          "t": 3
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_02",
+          "key": "3,3->4,3,3",
+          "t": 3
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_02",
+          "key": "5,3,4",
+          "t": 4
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_02",
+          "key": "4,3->5,3,4",
+          "t": 4
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_02",
+          "key": "6,3,5",
+          "t": 5
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_02",
+          "key": "5,3->6,3,5",
+          "t": 5
+        }
+      ],
+      "collisions_avoided": 0,
+      "duration_ms": 720,
+      "success": true
+    },
+    {
+      "episode_id": "ep_stress_6amr_amr_03",
+      "scenario_id": "stress_6amr",
+      "scenario_name": "6-AMR Stress Evidence Scenario",
+      "amr_id": "AMR_03",
+      "task": "MOVE",
+      "agent_decision": {
+        "taskId": "task_stress_6amr_003",
+        "amrId": "AMR_03",
+        "targetId": "W3",
+        "targetCell": {
+          "x": 6,
+          "y": 5
+        },
+        "reason": "stress_6amr_nearest_assignment_evidence",
+        "priority": 3,
+        "distance": 5,
+        "decision": "ASSIGN"
+      },
+      "start_cell": [
+        1,
+        5
+      ],
+      "goal_cell": [
+        6,
+        5
+      ],
+      "trajectory": [
+        {
+          "t": 0,
+          "cell": [
+            1,
+            5
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 1,
+          "cell": [
+            2,
+            5
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 2,
+          "cell": [
+            3,
+            5
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 3,
+          "cell": [
+            4,
+            5
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 4,
+          "cell": [
+            5,
+            5
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 5,
+          "cell": [
+            6,
+            5
+          ],
+          "status": "DONE"
+        }
+      ],
+      "reservation_log": [
+        {
+          "type": "CELL",
+          "amrId": "AMR_03",
+          "key": "1,5,0",
+          "t": 0
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_03",
+          "key": "2,5,1",
+          "t": 1
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_03",
+          "key": "1,5->2,5,1",
+          "t": 1
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_03",
+          "key": "3,5,2",
+          "t": 2
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_03",
+          "key": "2,5->3,5,2",
+          "t": 2
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_03",
+          "key": "4,5,3",
+          "t": 3
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_03",
+          "key": "3,5->4,5,3",
+          "t": 3
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_03",
+          "key": "5,5,4",
+          "t": 4
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_03",
+          "key": "4,5->5,5,4",
+          "t": 4
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_03",
+          "key": "6,5,5",
+          "t": 5
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_03",
+          "key": "5,5->6,5,5",
+          "t": 5
+        }
+      ],
+      "collisions_avoided": 0,
+      "duration_ms": 720,
+      "success": true
+    },
+    {
+      "episode_id": "ep_stress_6amr_amr_04",
+      "scenario_id": "stress_6amr",
+      "scenario_name": "6-AMR Stress Evidence Scenario",
+      "amr_id": "AMR_04",
+      "task": "MOVE",
+      "agent_decision": {
+        "taskId": "task_stress_6amr_004",
+        "amrId": "AMR_04",
+        "targetId": "W4",
+        "targetCell": {
+          "x": 6,
+          "y": 7
+        },
+        "reason": "stress_6amr_nearest_assignment_evidence",
+        "priority": 4,
+        "distance": 5,
+        "decision": "ASSIGN"
+      },
+      "start_cell": [
+        1,
+        7
+      ],
+      "goal_cell": [
+        6,
+        7
+      ],
+      "trajectory": [
+        {
+          "t": 0,
+          "cell": [
+            1,
+            7
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 1,
+          "cell": [
+            2,
+            7
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 2,
+          "cell": [
+            3,
+            7
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 3,
+          "cell": [
+            4,
+            7
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 4,
+          "cell": [
+            5,
+            7
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 5,
+          "cell": [
+            6,
+            7
+          ],
+          "status": "DONE"
+        }
+      ],
+      "reservation_log": [
+        {
+          "type": "CELL",
+          "amrId": "AMR_04",
+          "key": "1,7,0",
+          "t": 0
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_04",
+          "key": "2,7,1",
+          "t": 1
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_04",
+          "key": "1,7->2,7,1",
+          "t": 1
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_04",
+          "key": "3,7,2",
+          "t": 2
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_04",
+          "key": "2,7->3,7,2",
+          "t": 2
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_04",
+          "key": "4,7,3",
+          "t": 3
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_04",
+          "key": "3,7->4,7,3",
+          "t": 3
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_04",
+          "key": "5,7,4",
+          "t": 4
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_04",
+          "key": "4,7->5,7,4",
+          "t": 4
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_04",
+          "key": "6,7,5",
+          "t": 5
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_04",
+          "key": "5,7->6,7,5",
+          "t": 5
+        }
+      ],
+      "collisions_avoided": 0,
+      "duration_ms": 720,
+      "success": true
+    },
+    {
+      "episode_id": "ep_stress_6amr_amr_05",
+      "scenario_id": "stress_6amr",
+      "scenario_name": "6-AMR Stress Evidence Scenario",
+      "amr_id": "AMR_05",
+      "task": "MOVE",
+      "agent_decision": {
+        "taskId": "task_stress_6amr_005",
+        "amrId": "AMR_05",
+        "targetId": "W5",
+        "targetCell": {
+          "x": 6,
+          "y": 9
+        },
+        "reason": "stress_6amr_nearest_assignment_evidence",
+        "priority": 5,
+        "distance": 5,
+        "decision": "ASSIGN"
+      },
+      "start_cell": [
+        1,
+        9
+      ],
+      "goal_cell": [
+        6,
+        9
+      ],
+      "trajectory": [
+        {
+          "t": 0,
+          "cell": [
+            1,
+            9
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 1,
+          "cell": [
+            2,
+            9
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 2,
+          "cell": [
+            3,
+            9
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 3,
+          "cell": [
+            4,
+            9
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 4,
+          "cell": [
+            5,
+            9
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 5,
+          "cell": [
+            6,
+            9
+          ],
+          "status": "DONE"
+        }
+      ],
+      "reservation_log": [
+        {
+          "type": "CELL",
+          "amrId": "AMR_05",
+          "key": "1,9,0",
+          "t": 0
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_05",
+          "key": "2,9,1",
+          "t": 1
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_05",
+          "key": "1,9->2,9,1",
+          "t": 1
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_05",
+          "key": "3,9,2",
+          "t": 2
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_05",
+          "key": "2,9->3,9,2",
+          "t": 2
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_05",
+          "key": "4,9,3",
+          "t": 3
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_05",
+          "key": "3,9->4,9,3",
+          "t": 3
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_05",
+          "key": "5,9,4",
+          "t": 4
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_05",
+          "key": "4,9->5,9,4",
+          "t": 4
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_05",
+          "key": "6,9,5",
+          "t": 5
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_05",
+          "key": "5,9->6,9,5",
+          "t": 5
+        }
+      ],
+      "collisions_avoided": 0,
+      "duration_ms": 720,
+      "success": true
+    },
+    {
+      "episode_id": "ep_stress_6amr_amr_06",
+      "scenario_id": "stress_6amr",
+      "scenario_name": "6-AMR Stress Evidence Scenario",
+      "amr_id": "AMR_06",
+      "task": "MOVE",
+      "agent_decision": {
+        "taskId": "task_stress_6amr_006",
+        "amrId": "AMR_06",
+        "targetId": "W6",
+        "targetCell": {
+          "x": 6,
+          "y": 11
+        },
+        "reason": "stress_6amr_nearest_assignment_evidence",
+        "priority": 6,
+        "distance": 5,
+        "decision": "ASSIGN"
+      },
+      "start_cell": [
+        1,
+        11
+      ],
+      "goal_cell": [
+        6,
+        11
+      ],
+      "trajectory": [
+        {
+          "t": 0,
+          "cell": [
+            1,
+            11
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 1,
+          "cell": [
+            2,
+            11
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 2,
+          "cell": [
+            3,
+            11
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 3,
+          "cell": [
+            4,
+            11
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 4,
+          "cell": [
+            5,
+            11
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 5,
+          "cell": [
+            6,
+            11
+          ],
+          "status": "DONE"
+        }
+      ],
+      "reservation_log": [
+        {
+          "type": "CELL",
+          "amrId": "AMR_06",
+          "key": "1,11,0",
+          "t": 0
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_06",
+          "key": "2,11,1",
+          "t": 1
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_06",
+          "key": "1,11->2,11,1",
+          "t": 1
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_06",
+          "key": "3,11,2",
+          "t": 2
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_06",
+          "key": "2,11->3,11,2",
+          "t": 2
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_06",
+          "key": "4,11,3",
+          "t": 3
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_06",
+          "key": "3,11->4,11,3",
+          "t": 3
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_06",
+          "key": "5,11,4",
+          "t": 4
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_06",
+          "key": "4,11->5,11,4",
+          "t": 4
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_06",
+          "key": "6,11,5",
+          "t": 5
+        },
+        {
+          "type": "EDGE",
+          "amrId": "AMR_06",
+          "key": "5,11->6,11,5",
+          "t": 5
+        }
+      ],
+      "collisions_avoided": 0,
+      "duration_ms": 720,
+      "success": true
+    }
+  ]
+}

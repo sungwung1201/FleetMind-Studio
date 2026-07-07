@@ -62,3 +62,16 @@ Expected result:
 ```text
 PASS
 ```
+
+
+## Included Evidence Files
+
+| File | Purpose |
+|---|---|
+| `dataset/episodes/default_episode.json` | Default 3-AMR fleet planning evidence |
+| `dataset/episodes/edge_swap_episode.json` | Edge swap prevention evidence |
+| `dataset/episodes/bottleneck_episode.json` | Bottleneck wait/detour evidence |
+| `dataset/episodes/no_path_episode.json` | No-path fast-fail evidence |
+| `dataset/episodes/stress_6amr_episode.json` | 6-AMR scalability evidence |
+| `dataset/snapshots/stress_6amr_snapshot.png` | 6-AMR stress scenario visual evidence |
+

@@ -3260,7 +3260,7 @@ function App() {
       <section className="hero">
         <div>
           <p className="eyebrow">VISIONSPACE TESSERACT Assignment</p>
-          <h1>Robot Fleet Web Studio</h1>
+          <h1>FleetMind Studio</h1>
           <p className="subtitle">
             Step 6: Synthetic episode dataset export and validation.
           </p>

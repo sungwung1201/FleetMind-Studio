@@ -1,6 +1,6 @@
 # AI Agent v2: Rule-Based Hybrid Fleet Mission Parser
 
-The deployed Robot Fleet Web Studio demo uses a local rule-based AI Agent. It does not require external LLM APIs, internet access, or API keys.
+The deployed FleetMind Studio demo uses a local rule-based AI Agent. It does not require external LLM APIs, internet access, or API keys.
 
 ## Why not GPT/Gemini in the deployed frontend?
 
