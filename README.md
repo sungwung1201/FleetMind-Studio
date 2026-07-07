@@ -1,6 +1,6 @@
 # FleetMind Studio
 
-FleetMind Studio **웹 기반 AMR Fleet 시뮬레이션 스튜디오**다. 20x20 이상 Grid에서 AMR, Workstation, Obstacle, Goal을 직접 편집하고, 자연어/JSON 명령으로 다중 AMR 작업을 배정한 뒤 **Time A\, Reservation Table, Global Arbiter** 기반으로 경로를 생성·검증·재생한다.
+FleetMind Studio는 다중 AMR 작업 배정, Time A* 경로 계획, Reservation Table 기반 충돌 방지, Global Arbiter 검증, 실행 리플레이, 합성 데이터 추출을 하나로 통합한 웹 기반 Fleet Planning Studio입니다. 20x20 이상 Grid에서 AMR, Workstation, Obstacle, Goal을 직접 편집하고, 자연어/JSON 명령으로 다중 AMR 작업을 배정한 뒤 경로를 생성·검증·재생할 수 있습니다.
 
 <!-- SUBMISSION_LINKS_START -->
 
