@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import type {
   AgentDecision,
   AMR,
@@ -27,7 +28,7 @@ function toCellTuple(cell: { x: number; y: number }): [number, number] {
 }
 
 function getEpisodeId(scenarioId: string, amrId: string): string {
-  return `ep_${scenarioId}_${amrId}_${Date.now()}`;
+  return `ep_${scenarioId}_${amrId}_${uuidv4()}`;
 }
 
 function getWaitSteps(amr: AMR): number {
@@ -114,7 +115,7 @@ export function createEpisodeDataset(params: CreateDatasetParams): EpisodeDatase
   const successCount = episodes.filter((episode) => episode.success).length;
 
   return {
-    dataset_id: `dataset_${scenario.id}_${Date.now()}`,
+    dataset_id: `dataset_${scenario.id}_${uuidv4()}`,
     generated_at: new Date().toISOString(),
     assignment: "VISIONSPACE_TESSERACT_ROBOT_TRACK",
     scenario_id: scenario.id,
