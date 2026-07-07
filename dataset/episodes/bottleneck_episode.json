@@ -1,22 +1,22 @@
 {
-  "dataset_id": "dataset_default_fleet_submission_evidence",
+  "dataset_id": "dataset_bottleneck_wait_test_submission_evidence",
   "generated_at": "2026-07-07T19:40:00.000Z",
   "assignment": "VISIONSPACE_TESSERACT_ROBOT_TRACK",
-  "scenario_id": "default_fleet",
-  "scenario_name": "Default Fleet Scenario",
+  "scenario_id": "bottleneck_wait_test",
+  "scenario_name": "Bottleneck Wait vs Detour Scenario",
   "summary": {
     "amr_count": 3,
     "episode_count": 3,
     "success_count": 3,
     "total_collisions_detected": 0,
     "total_edge_swaps_detected": 0,
-    "checked_ticks": 26
+    "checked_ticks": 15
   },
   "episodes": [
     {
-      "episode_id": "ep_default_fleet_amr_01",
-      "scenario_id": "default_fleet",
-      "scenario_name": "Default Fleet Scenario",
+      "episode_id": "ep_bottleneck_wait_test_amr_01",
+      "scenario_id": "bottleneck_wait_test",
+      "scenario_name": "Bottleneck Wait vs Detour Scenario",
       "amr_id": "AMR_01",
       "task": "MOVE",
       "agent_decision": {
@@ -25,83 +25,83 @@
         "targetId": "W1",
         "targetCell": {
           "x": 16,
-          "y": 4
+          "y": 9
         },
-        "reason": "nearest assignment evidence sample, distance=18",
+        "reason": "nearest assignment evidence sample, distance=14",
         "priority": 1,
-        "distance": 18,
+        "distance": 14,
         "decision": "ASSIGN"
       },
       "start_cell": [
-        1,
-        1
+        2,
+        9
       ],
       "goal_cell": [
         16,
-        4
+        9
       ],
       "trajectory": [
         {
           "t": 0,
           "cell": [
-            1,
-            1
+            2,
+            9
           ],
           "status": "MOVING"
         },
         {
           "t": 1,
           "cell": [
-            2,
-            1
+            3,
+            9
           ],
           "status": "MOVING"
         },
         {
           "t": 2,
           "cell": [
-            3,
-            1
+            4,
+            9
           ],
           "status": "MOVING"
         },
         {
           "t": 3,
           "cell": [
-            4,
-            1
+            5,
+            9
           ],
           "status": "MOVING"
         },
         {
           "t": 4,
           "cell": [
-            5,
-            1
+            6,
+            9
           ],
           "status": "MOVING"
         },
         {
           "t": 5,
           "cell": [
-            6,
-            1
+            7,
+            9
           ],
           "status": "MOVING"
         },
         {
           "t": 6,
           "cell": [
-            7,
-            1
+            8,
+            9
           ],
           "status": "MOVING"
         },
         {
           "t": 7,
           "cell": [
-            8,
-            1
+            9,
+            9
           ],
           "status": "MOVING"
         },
@@ -109,15 +109,15 @@
           "t": 8,
           "cell": [
             9,
-            1
+            9
           ],
-          "status": "MOVING"
+          "status": "WAITING"
         },
         {
           "t": 9,
           "cell": [
             10,
-            1
+            9
           ],
           "status": "MOVING"
         },
@@ -125,7 +125,7 @@
           "t": 10,
           "cell": [
             11,
-            1
+            9
           ],
           "status": "MOVING"
         },
@@ -133,7 +133,7 @@
           "t": 11,
           "cell": [
             12,
-            1
+            9
           ],
           "status": "MOVING"
         },
@@ -141,7 +141,7 @@
           "t": 12,
           "cell": [
             13,
-            1
+            9
           ],
           "status": "MOVING"
         },
@@ -149,7 +149,7 @@
           "t": 13,
           "cell": [
             14,
-            1
+            9
           ],
           "status": "MOVING"
         },
@@ -157,7 +157,7 @@
           "t": 14,
           "cell": [
             15,
-            1
+            9
           ],
           "status": "MOVING"
         },
@@ -165,31 +165,7 @@
           "t": 15,
           "cell": [
             16,
-            1
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 16,
-          "cell": [
-            16,
-            2
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 17,
-          "cell": [
-            16,
-            3
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 18,
-          "cell": [
-            16,
-            4
+            9
           ],
           "status": "DONE"
         }
@@ -198,126 +174,108 @@
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "1,1,0",
+          "key": "2,9,0",
           "t": 0
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "2,1,1",
+          "key": "3,9,1",
           "t": 1
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "3,1,2",
+          "key": "4,9,2",
           "t": 2
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "4,1,3",
+          "key": "5,9,3",
           "t": 3
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "5,1,4",
+          "key": "6,9,4",
           "t": 4
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "6,1,5",
+          "key": "7,9,5",
           "t": 5
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "7,1,6",
+          "key": "8,9,6",
           "t": 6
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "8,1,7",
+          "key": "9,9,7",
           "t": 7
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "9,1,8",
+          "key": "9,9,8",
           "t": 8
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "10,1,9",
+          "key": "10,9,9",
           "t": 9
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "11,1,10",
+          "key": "11,9,10",
           "t": 10
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "12,1,11",
+          "key": "12,9,11",
           "t": 11
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "13,1,12",
+          "key": "13,9,12",
           "t": 12
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "14,1,13",
+          "key": "14,9,13",
           "t": 13
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "15,1,14",
+          "key": "15,9,14",
           "t": 14
         },
         {
           "type": "CELL",
           "amrId": "AMR_01",
-          "key": "16,1,15",
+          "key": "16,9,15",
           "t": 15
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_01",
-          "key": "16,2,16",
-          "t": 16
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_01",
-          "key": "16,3,17",
-          "t": 17
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_01",
-          "key": "16,4,18",
-          "t": 18
         }
       ],
-      "collisions_avoided": 0,
-      "duration_ms": 3960,
+      "collisions_avoided": 1,
+      "duration_ms": 3300,
       "success": true
     },
     {
-      "episode_id": "ep_default_fleet_amr_02",
-      "scenario_id": "default_fleet",
-      "scenario_name": "Default Fleet Scenario",
+      "episode_id": "ep_bottleneck_wait_test_amr_02",
+      "scenario_id": "bottleneck_wait_test",
+      "scenario_name": "Bottleneck Wait vs Detour Scenario",
       "amr_id": "AMR_02",
       "task": "MOVE",
       "agent_decision": {
@@ -328,14 +286,14 @@
           "x": 16,
           "y": 10
         },
-        "reason": "nearest assignment evidence sample, distance=22",
+        "reason": "nearest assignment evidence sample, distance=14",
         "priority": 2,
-        "distance": 22,
+        "distance": 14,
         "decision": "ASSIGN"
       },
       "start_cell": [
-        1,
-        3
+        2,
+        10
       ],
       "goal_cell": [
         16,
@@ -345,72 +303,72 @@
         {
           "t": 0,
           "cell": [
-            1,
-            3
+            2,
+            10
           ],
           "status": "MOVING"
         },
         {
           "t": 1,
           "cell": [
-            2,
-            3
+            3,
+            10
           ],
           "status": "MOVING"
         },
         {
           "t": 2,
           "cell": [
-            3,
-            3
+            4,
+            10
           ],
           "status": "MOVING"
         },
         {
           "t": 3,
           "cell": [
-            4,
-            3
+            5,
+            10
           ],
           "status": "MOVING"
         },
         {
           "t": 4,
           "cell": [
-            5,
-            3
+            6,
+            10
           ],
           "status": "MOVING"
         },
         {
           "t": 5,
           "cell": [
-            6,
-            3
+            7,
+            10
           ],
           "status": "MOVING"
         },
         {
           "t": 6,
           "cell": [
-            7,
-            3
+            8,
+            10
           ],
           "status": "MOVING"
         },
         {
           "t": 7,
           "cell": [
-            8,
-            3
+            9,
+            10
           ],
           "status": "MOVING"
         },
         {
           "t": 8,
           "cell": [
-            9,
-            3
+            10,
+            10
           ],
           "status": "MOVING"
         },
@@ -418,15 +376,15 @@
           "t": 9,
           "cell": [
             10,
-            3
+            10
           ],
-          "status": "MOVING"
+          "status": "WAITING"
         },
         {
           "t": 10,
           "cell": [
             11,
-            3
+            10
           ],
           "status": "MOVING"
         },
@@ -434,7 +392,7 @@
           "t": 11,
           "cell": [
             12,
-            3
+            10
           ],
           "status": "MOVING"
         },
@@ -442,7 +400,7 @@
           "t": 12,
           "cell": [
             13,
-            3
+            10
           ],
           "status": "MOVING"
         },
@@ -450,7 +408,7 @@
           "t": 13,
           "cell": [
             14,
-            3
+            10
           ],
           "status": "MOVING"
         },
@@ -458,68 +416,12 @@
           "t": 14,
           "cell": [
             15,
-            3
+            10
           ],
           "status": "MOVING"
         },
         {
           "t": 15,
-          "cell": [
-            16,
-            3
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 16,
-          "cell": [
-            16,
-            4
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 17,
-          "cell": [
-            16,
-            5
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 18,
-          "cell": [
-            16,
-            6
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 19,
-          "cell": [
-            16,
-            7
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 20,
-          "cell": [
-            16,
-            8
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 21,
-          "cell": [
-            16,
-            9
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 22,
           "cell": [
             16,
             10
@@ -531,150 +433,108 @@
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "1,3,0",
+          "key": "2,10,0",
           "t": 0
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "2,3,1",
+          "key": "3,10,1",
           "t": 1
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "3,3,2",
+          "key": "4,10,2",
           "t": 2
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "4,3,3",
+          "key": "5,10,3",
           "t": 3
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "5,3,4",
+          "key": "6,10,4",
           "t": 4
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "6,3,5",
+          "key": "7,10,5",
           "t": 5
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "7,3,6",
+          "key": "8,10,6",
           "t": 6
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "8,3,7",
+          "key": "9,10,7",
           "t": 7
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "9,3,8",
+          "key": "10,10,8",
           "t": 8
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "10,3,9",
+          "key": "10,10,9",
           "t": 9
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "11,3,10",
+          "key": "11,10,10",
           "t": 10
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "12,3,11",
+          "key": "12,10,11",
           "t": 11
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "13,3,12",
+          "key": "13,10,12",
           "t": 12
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "14,3,13",
+          "key": "14,10,13",
           "t": 13
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "15,3,14",
+          "key": "15,10,14",
           "t": 14
         },
         {
           "type": "CELL",
           "amrId": "AMR_02",
-          "key": "16,3,15",
+          "key": "16,10,15",
           "t": 15
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_02",
-          "key": "16,4,16",
-          "t": 16
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_02",
-          "key": "16,5,17",
-          "t": 17
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_02",
-          "key": "16,6,18",
-          "t": 18
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_02",
-          "key": "16,7,19",
-          "t": 19
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_02",
-          "key": "16,8,20",
-          "t": 20
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_02",
-          "key": "16,9,21",
-          "t": 21
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_02",
-          "key": "16,10,22",
-          "t": 22
         }
       ],
-      "collisions_avoided": 0,
-      "duration_ms": 4840,
+      "collisions_avoided": 1,
+      "duration_ms": 3300,
       "success": true
     },
     {
-      "episode_id": "ep_default_fleet_amr_03",
-      "scenario_id": "default_fleet",
-      "scenario_name": "Default Fleet Scenario",
+      "episode_id": "ep_bottleneck_wait_test_amr_03",
+      "scenario_id": "bottleneck_wait_test",
+      "scenario_name": "Bottleneck Wait vs Detour Scenario",
       "amr_id": "AMR_03",
       "task": "MOVE",
       "agent_decision": {
@@ -683,235 +543,139 @@
         "targetId": "W3",
         "targetCell": {
           "x": 16,
-          "y": 16
+          "y": 11
         },
-        "reason": "nearest assignment evidence sample, distance=26",
+        "reason": "nearest assignment evidence sample, distance=14",
         "priority": 3,
-        "distance": 26,
+        "distance": 14,
         "decision": "ASSIGN"
       },
       "start_cell": [
-        1,
-        5
+        2,
+        11
       ],
       "goal_cell": [
         16,
-        16
+        11
       ],
       "trajectory": [
         {
           "t": 0,
           "cell": [
-            1,
-            5
+            2,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 1,
           "cell": [
-            2,
-            5
+            3,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 2,
           "cell": [
-            3,
-            5
+            4,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 3,
           "cell": [
-            4,
-            5
+            5,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 4,
           "cell": [
-            5,
-            5
+            6,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 5,
           "cell": [
-            6,
-            5
+            7,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 6,
           "cell": [
-            7,
-            5
+            8,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 7,
           "cell": [
-            8,
-            5
+            9,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 8,
           "cell": [
-            9,
-            5
+            10,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 9,
           "cell": [
-            10,
-            5
+            11,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 10,
           "cell": [
-            11,
-            5
+            12,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 11,
           "cell": [
-            12,
-            5
+            13,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 12,
           "cell": [
-            13,
-            5
+            14,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 13,
           "cell": [
-            14,
-            5
+            15,
+            11
           ],
           "status": "MOVING"
         },
         {
           "t": 14,
           "cell": [
-            15,
-            5
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 15,
-          "cell": [
-            16,
-            5
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 16,
-          "cell": [
-            16,
-            6
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 17,
-          "cell": [
-            16,
-            7
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 18,
-          "cell": [
-            16,
-            8
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 19,
-          "cell": [
-            16,
-            9
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 20,
-          "cell": [
-            16,
-            10
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 21,
-          "cell": [
             16,
             11
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 22,
-          "cell": [
-            16,
-            12
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 23,
-          "cell": [
-            16,
-            13
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 24,
-          "cell": [
-            16,
-            14
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 25,
-          "cell": [
-            16,
-            15
-          ],
-          "status": "MOVING"
-        },
-        {
-          "t": 26,
-          "cell": [
-            16,
-            16
           ],
           "status": "DONE"
         }
@@ -920,168 +684,96 @@
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "1,5,0",
+          "key": "2,11,0",
           "t": 0
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "2,5,1",
+          "key": "3,11,1",
           "t": 1
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "3,5,2",
+          "key": "4,11,2",
           "t": 2
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "4,5,3",
+          "key": "5,11,3",
           "t": 3
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "5,5,4",
+          "key": "6,11,4",
           "t": 4
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "6,5,5",
+          "key": "7,11,5",
           "t": 5
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "7,5,6",
+          "key": "8,11,6",
           "t": 6
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "8,5,7",
+          "key": "9,11,7",
           "t": 7
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "9,5,8",
+          "key": "10,11,8",
           "t": 8
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "10,5,9",
+          "key": "11,11,9",
           "t": 9
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "11,5,10",
+          "key": "12,11,10",
           "t": 10
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "12,5,11",
+          "key": "13,11,11",
           "t": 11
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "13,5,12",
+          "key": "14,11,12",
           "t": 12
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "14,5,13",
+          "key": "15,11,13",
           "t": 13
         },
         {
           "type": "CELL",
           "amrId": "AMR_03",
-          "key": "15,5,14",
+          "key": "16,11,14",
           "t": 14
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_03",
-          "key": "16,5,15",
-          "t": 15
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_03",
-          "key": "16,6,16",
-          "t": 16
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_03",
-          "key": "16,7,17",
-          "t": 17
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_03",
-          "key": "16,8,18",
-          "t": 18
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_03",
-          "key": "16,9,19",
-          "t": 19
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_03",
-          "key": "16,10,20",
-          "t": 20
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_03",
-          "key": "16,11,21",
-          "t": 21
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_03",
-          "key": "16,12,22",
-          "t": 22
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_03",
-          "key": "16,13,23",
-          "t": 23
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_03",
-          "key": "16,14,24",
-          "t": 24
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_03",
-          "key": "16,15,25",
-          "t": 25
-        },
-        {
-          "type": "CELL",
-          "amrId": "AMR_03",
-          "key": "16,16,26",
-          "t": 26
         }
       ],
       "collisions_avoided": 0,
-      "duration_ms": 5720,
+      "duration_ms": 3080,
       "success": true
     }
   ]

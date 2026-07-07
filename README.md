@@ -1,17 +1,21 @@
 # Robot Fleet Web Studio
 
-VISIONSPACE TESSERACT 과제용 웹 기반 AMR Fleet 시뮬레이션 스튜디오다. 20x20 이상 Grid에서 다중 AMR, Workstation, Obstacle을 편집하고 자연어/JSON 명령으로 작업을 배정한 뒤 Time A*, Reservation Table, Global Arbiter 기반으로 경로를 생성·검증·재생한다.
+VISIONSPACE TESSERACT 과제용 **웹 기반 AMR Fleet 시뮬레이션 스튜디오**다. 20x20 이상 Grid에서 AMR, Workstation, Obstacle, Goal을 직접 편집하고, 자연어/JSON 명령으로 다중 AMR 작업을 배정한 뒤 **Time A\, Reservation Table, Global Arbiter** 기반으로 경로를 생성·검증·재생한다.
 
-## 실행 방법
+## 1. Quick Start
 
 ```bash
 npm install
 npm run dev
 ```
 
-브라우저에서 Vite가 출력하는 `http://localhost:5173/` 주소를 연다.
+브라우저에서 Vite가 출력하는 주소를 연다.
 
-## 검증 명령
+```text
+http://localhost:5173/
+```
+
+제출 전 검증 명령은 다음 3개다.
 
 ```bash
 npm run build
@@ -19,33 +23,36 @@ npm run lint
 npm run validate
 ```
 
-`npm run validate`는 `dataset/episodes/*.json` 샘플 데이터셋을 검사한다.
+정상 기대 결과:
 
-## 주요 기능
+```text
+build PASS
+lint PASS
+validate PASS
+```
 
-| 구분 | 구현 내용 |
-|---|---|
-| Grid Studio | 20x20 이상 Grid, AMR/Workstation/Obstacle/Goal 시각화 |
-| Edit | Select, Delete, Add 모드 |
-| Build | AMR, Workstation, Goal, Wall 추가 |
-| Drag Add/Delete | 좌클릭을 누른 상태로 지나가는 셀에 연속 추가/삭제 |
-| Agent | 자연어/JSON 명령 파싱 및 작업 배정 |
-| Planner | Time A* 기반 시간축 경로 탐색 |
-| Reservation | Cell/Edge 예약, Edge Swap 차단 |
-| Arbiter | 충돌, blocked cell, out-of-bounds, edge swap 검증 |
-| Replay | 생성된 path를 tick 단위로 재생 |
-| Dataset | Episode JSON export, PNG snapshot export, validation |
-| Scenario | Scenario export/import, 기본/edge swap/bottleneck 시나리오 |
+## 2. 핵심 사용 순서
 
-## 사용 예시
+1. `Edit > Add` 클릭
+2. `Build`에서 `AMR / Workstation / Goal / Wall` 선택
+3. Grid를 클릭하거나 좌클릭을 누른 채 드래그하여 연속 배치
+4. `Agent` 입력창에 자연어 또는 JSON 명령 입력
+5. `Plan Only` 실행
+6. Agent Log, Reservation Log, Arbiter Log 확인
+7. `Start Fleet / Play`로 tick replay 확인
+8. `Dataset > Export / PNG / Validate`로 제출 증거 생성
 
-Agent 입력창에 다음처럼 입력한다.
+## 3. 자연어 / JSON 명령 예시
+
+자연어:
 
 ```text
 모든 작업대를 가장 가까운 AMR로 채워줘
+작업대 3 먼저 채우고 작업대 1도 처리해
+W1, W2, W3를 가까운 AMR 순서로 배정해줘
 ```
 
-또는 JSON으로 입력한다.
+JSON:
 
 ```json
 {
@@ -54,15 +61,95 @@ Agent 입력창에 다음처럼 입력한다.
 }
 ```
 
-이후 `Plan Only`를 누르면 Agent 배정, Time A* 경로, Reservation Table, Global Arbiter 로그가 생성된다. `Play` 또는 `Start Fleet`를 누르면 AMR들이 경로를 따라 움직인다.
+우선순위 기반 JSON:
 
-## 코드 구조
+```json
+{
+  "fill": ["W3", "W1"],
+  "priority": "input_order"
+}
+```
+
+## 4. 평가 기준 대응표
+
+| 평가 요구사항 | 구현 여부 | 확인 위치 | 시연 방법 |
+|---|---:|---|---|
+| 20x20 이상 Grid | O | `src/scenarios/defaultScenario.ts` | 화면 Grid / Fleet Stats 확인 |
+| AMR 3대 이상 | O | `defaultScenario.ts`, `GridCanvas.tsx` | AMR_01~AMR_03 표시 확인 |
+| Workstation 3개 이상 | O | `defaultScenario.ts` | W1~W3 표시 확인 |
+| Obstacle 5개 이상 | O | `defaultScenario.ts` | OBS 표시 확인 |
+| AMR/WS/Goal/Wall 편집 | O | `src/App.tsx`, `src/ui/GridCanvas.tsx` | Add + Build 버튼으로 추가 |
+| 연속 추가/삭제 | O | `src/App.tsx` | Add/Delete 상태에서 좌클릭 드래그 |
+| 자연어 Agent | O | `src/core/taskAgent.ts` | 자연어 입력 후 Plan Only |
+| JSON Agent | O | `taskAgent.ts` | JSON 명령 입력 후 Plan Only |
+| Time A* | O | `src/core/timeAstar.ts` | Planner Log에서 Time A* path 확인 |
+| Reservation Table | O | `src/core/reservationTable.ts` | Reservation Log 확인 |
+| Edge swap 차단 | O | `reservationTable.ts`, `globalArbiter.ts` | Edge Swap Scenario 실행 |
+| Wait vs Detour 판단 | O | `src/core/pathCost.ts` | Bottleneck Scenario에서 wait/detour 로그 확인 |
+| Global Arbiter | O | `src/core/globalArbiter.ts` | Arbiter APPROVED/REJECTED 로그 확인 |
+| Replay | O | `src/App.tsx`, `ViewTimelineControls.tsx` | Start Fleet / tick 이동 확인 |
+| Dataset JSON Export | O | `src/dataset/episodeLogger.ts` | Dataset > Export |
+| PNG Snapshot Export | O | `src/dataset/snapshotExporter.ts` | Dataset > PNG |
+| Dataset Validate | O | `dataset/validate.js` | `npm run validate` |
+| Scenario Export/Import | O | `src/scenarios/scenarioIO.ts` | Export Scenario / Import Scenario |
+
+## 5. 시스템 아키텍처
+
+```mermaid
+flowchart LR
+    A[User Command\nNatural Language / JSON] --> B[Task Agent]
+    B --> C[AMR-Workstation Assignment]
+    C --> D[Time A* Planner]
+    D --> E[Reservation Table]
+    E --> F[Global Arbiter]
+    F --> G[Replay / Timeline]
+    F --> H[Dataset Export]
+    G --> I[PNG Snapshot]
+
+    D -. uses .-> J[Grid / Obstacles / Goals]
+    E -. prevents .-> K[Cell Collision / Edge Swap]
+    F -. validates .-> L[Blocked Cell / Out of Bounds / Conflicts]
+```
+
+## 6. 제출용 시나리오
+
+| 시나리오 | 목적 | 파일 | 증거 데이터 |
+|---|---|---|---|
+| Default Fleet Scenario | 기본 기능 시연 | `src/scenarios/defaultScenario.ts` | `dataset/episodes/default_episode.json` |
+| Edge Swap Prevention Scenario | 마주보는 AMR의 edge swap 방지 | `src/scenarios/edgeSwapScenario.ts` | `dataset/episodes/edge_swap_episode.json` |
+| Bottleneck Wait vs Detour Scenario | 좁은 통로에서 wait/detour 판단 | `src/scenarios/bottleneckScenario.ts` | `dataset/episodes/bottleneck_episode.json` |
+| No Path / Blocked Target Scenario | 실패 상황 처리 로그 확인 | `src/scenarios/noPathScenario.ts` | `dataset/episodes/no_path_episode.json` |
+
+Snapshot 증거는 다음 위치에 있다.
 
 ```text
-src/App.tsx                         전체 화면/툴바/실행 흐름
+dataset/snapshots/default_snapshot.png
+dataset/snapshots/edge_swap_snapshot.png
+dataset/snapshots/bottleneck_snapshot.png
+dataset/snapshots/no_path_snapshot.png
+```
+
+## 7. 데모 영상 권장 구성
+
+| 시간 | 화면 | 말할 내용 |
+|---:|---|---|
+| 0:00~0:15 | 전체 UI | 20x20 Grid 기반 AMR Fleet Studio |
+| 0:15~0:35 | Add/Delete/Goal/Wall | 객체 편집과 연속 드래그 편집 |
+| 0:35~0:55 | Agent Console | 자연어/JSON 명령 입력 |
+| 0:55~1:15 | Logs | Time A*, Reservation Table, Global Arbiter |
+| 1:15~1:35 | Replay | 다중 AMR 동시 이동 |
+| 1:35~1:50 | Dataset | JSON/PNG export와 validate |
+
+상세 대본은 `docs/DEMO_SCRIPT.md`에 정리했다.
+
+## 8. 코드 구조
+
+```text
+src/App.tsx                         전체 화면/툴바/Agent/Planner/Replay 연결
 src/ui/GridCanvas.tsx               Grid 렌더링 및 편집 인터랙션
 src/ui/AgentDrawer.tsx              Agent 패널
 src/ui/SceneTreeInspector.tsx       Scene/Inspector 패널
+src/ui/ViewTimelineControls.tsx     Replay/Timeline 조작
 src/core/taskAgent.ts               자연어/JSON 파싱 및 AMR-Workstation 배정
 src/core/timeAstar.ts               Time A* 경로 탐색
 src/core/reservationTable.ts        Cell/Edge Reservation Table
@@ -73,7 +160,7 @@ src/dataset/snapshotExporter.ts     PNG snapshot 생성
 src/scenarios/scenarioIO.ts         Scenario export/import
 ```
 
-## 제출 체크리스트
+## 9. 제출 체크리스트
 
 - [x] 20x20 이상 Grid
 - [x] AMR 3대 이상
@@ -84,7 +171,11 @@ src/scenarios/scenarioIO.ts         Scenario export/import
 - [x] Reservation Table
 - [x] Edge swap 차단
 - [x] Global Arbiter
+- [x] Wait vs Detour 로그
 - [x] Replay
 - [x] Dataset JSON export
 - [x] PNG snapshot export
 - [x] validate script 및 샘플 dataset
+- [x] Default / Edge Swap / Bottleneck / No Path 증거 시나리오
+- [x] README 평가 기준 대응표
+- [x] 데모 영상용 시나리오 가이드

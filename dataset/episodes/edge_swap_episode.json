@@ -1,0 +1,318 @@
+{
+  "dataset_id": "dataset_edge_swap_test_submission_evidence",
+  "generated_at": "2026-07-07T19:40:00.000Z",
+  "assignment": "VISIONSPACE_TESSERACT_ROBOT_TRACK",
+  "scenario_id": "edge_swap_test",
+  "scenario_name": "Edge Swap Prevention Scenario",
+  "summary": {
+    "amr_count": 3,
+    "episode_count": 3,
+    "success_count": 3,
+    "total_collisions_detected": 0,
+    "total_edge_swaps_detected": 0,
+    "checked_ticks": 6
+  },
+  "episodes": [
+    {
+      "episode_id": "ep_edge_swap_test_amr_01",
+      "scenario_id": "edge_swap_test",
+      "scenario_name": "Edge Swap Prevention Scenario",
+      "amr_id": "AMR_01",
+      "task": "MOVE",
+      "agent_decision": {
+        "taskId": "task_01",
+        "amrId": "AMR_01",
+        "targetId": "W1",
+        "targetCell": {
+          "x": 7,
+          "y": 5
+        },
+        "reason": "nearest assignment evidence sample, distance=2",
+        "priority": 1,
+        "distance": 2,
+        "decision": "ASSIGN"
+      },
+      "start_cell": [
+        5,
+        5
+      ],
+      "goal_cell": [
+        7,
+        5
+      ],
+      "trajectory": [
+        {
+          "t": 0,
+          "cell": [
+            5,
+            5
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 1,
+          "cell": [
+            6,
+            5
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 2,
+          "cell": [
+            6,
+            5
+          ],
+          "status": "WAITING"
+        },
+        {
+          "t": 3,
+          "cell": [
+            7,
+            5
+          ],
+          "status": "DONE"
+        }
+      ],
+      "reservation_log": [
+        {
+          "type": "CELL",
+          "amrId": "AMR_01",
+          "key": "5,5,0",
+          "t": 0
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_01",
+          "key": "6,5,1",
+          "t": 1
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_01",
+          "key": "6,5,2",
+          "t": 2
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_01",
+          "key": "7,5,3",
+          "t": 3
+        }
+      ],
+      "collisions_avoided": 1,
+      "duration_ms": 660,
+      "success": true
+    },
+    {
+      "episode_id": "ep_edge_swap_test_amr_02",
+      "scenario_id": "edge_swap_test",
+      "scenario_name": "Edge Swap Prevention Scenario",
+      "amr_id": "AMR_02",
+      "task": "MOVE",
+      "agent_decision": {
+        "taskId": "task_02",
+        "amrId": "AMR_02",
+        "targetId": "W2",
+        "targetCell": {
+          "x": 4,
+          "y": 5
+        },
+        "reason": "nearest assignment evidence sample, distance=2",
+        "priority": 2,
+        "distance": 2,
+        "decision": "ASSIGN"
+      },
+      "start_cell": [
+        6,
+        5
+      ],
+      "goal_cell": [
+        4,
+        5
+      ],
+      "trajectory": [
+        {
+          "t": 0,
+          "cell": [
+            6,
+            5
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 1,
+          "cell": [
+            5,
+            5
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 2,
+          "cell": [
+            4,
+            5
+          ],
+          "status": "DONE"
+        }
+      ],
+      "reservation_log": [
+        {
+          "type": "CELL",
+          "amrId": "AMR_02",
+          "key": "6,5,0",
+          "t": 0
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_02",
+          "key": "5,5,1",
+          "t": 1
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_02",
+          "key": "4,5,2",
+          "t": 2
+        }
+      ],
+      "collisions_avoided": 0,
+      "duration_ms": 440,
+      "success": true
+    },
+    {
+      "episode_id": "ep_edge_swap_test_amr_03",
+      "scenario_id": "edge_swap_test",
+      "scenario_name": "Edge Swap Prevention Scenario",
+      "amr_id": "AMR_03",
+      "task": "MOVE",
+      "agent_decision": {
+        "taskId": "task_03",
+        "amrId": "AMR_03",
+        "targetId": "W3",
+        "targetCell": {
+          "x": 2,
+          "y": 8
+        },
+        "reason": "nearest assignment evidence sample, distance=6",
+        "priority": 3,
+        "distance": 6,
+        "decision": "ASSIGN"
+      },
+      "start_cell": [
+        2,
+        2
+      ],
+      "goal_cell": [
+        2,
+        8
+      ],
+      "trajectory": [
+        {
+          "t": 0,
+          "cell": [
+            2,
+            2
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 1,
+          "cell": [
+            2,
+            3
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 2,
+          "cell": [
+            2,
+            4
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 3,
+          "cell": [
+            2,
+            5
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 4,
+          "cell": [
+            2,
+            6
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 5,
+          "cell": [
+            2,
+            7
+          ],
+          "status": "MOVING"
+        },
+        {
+          "t": 6,
+          "cell": [
+            2,
+            8
+          ],
+          "status": "DONE"
+        }
+      ],
+      "reservation_log": [
+        {
+          "type": "CELL",
+          "amrId": "AMR_03",
+          "key": "2,2,0",
+          "t": 0
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_03",
+          "key": "2,3,1",
+          "t": 1
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_03",
+          "key": "2,4,2",
+          "t": 2
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_03",
+          "key": "2,5,3",
+          "t": 3
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_03",
+          "key": "2,6,4",
+          "t": 4
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_03",
+          "key": "2,7,5",
+          "t": 5
+        },
+        {
+          "type": "CELL",
+          "amrId": "AMR_03",
+          "key": "2,8,6",
+          "t": 6
+        }
+      ],
+      "collisions_avoided": 0,
+      "duration_ms": 1320,
+      "success": true
+    }
+  ]
+}

@@ -2,11 +2,13 @@ import type { Scenario } from "../core/types";
 import { bottleneckScenario } from "./bottleneckScenario";
 import { defaultScenario } from "./defaultScenario";
 import { edgeSwapScenario } from "./edgeSwapScenario";
+import { noPathScenario } from "./noPathScenario";
 
 export const scenarioList: Scenario[] = [
   defaultScenario,
   edgeSwapScenario,
   bottleneckScenario,
+  noPathScenario,
 ];
 
 export const scenarioMap = new Map<string, Scenario>(
