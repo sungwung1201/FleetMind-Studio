@@ -9,7 +9,7 @@ FleetMind Studio는 다중 AMR 작업 배정, Time A* 경로 계획, Reservation
 | Item | Link |
 |---|---|
 | Live Demo | https://fleet-mind-studio.vercel.app/ |
-| Demo Video | TODO: add video URL |
+| Demo Video | https://youtu.be/WXZCSgPqJbQ |
 | Source Code | https://github.com/sungwung1201/FleetMind-Studio |
 
 ## Project Documentation
