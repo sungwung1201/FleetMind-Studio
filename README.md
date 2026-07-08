@@ -18,6 +18,7 @@ FleetMind Studio는 다중 AMR 작업 배정, Time A* 경로 계획, Reservation
 - [3-Minute Demo Script](docs/DEMO_SCRIPT_3MIN.md)
 - [Performance Notes](docs/PERFORMANCE_NOTES.md)
 - [Known Limitations](docs/KNOWN_LIMITATIONS.md)
+- [Engineering Decisions](docs/ENGINEERING_DECISIONS.md)
 - [Deployment Guide](docs/DEPLOYMENT.md)
 - [Dataset Schema](dataset/DATASET_SCHEMA.md)
 - [Data Collection Business Model](docs/DATA_COLLECTION_BUSINESS_MODEL.md)
