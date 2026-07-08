@@ -203,6 +203,30 @@ src/scenarios/scenarioIO.ts         Scenario export/import
 - [x] Project requirement mapping
 - [x] Demo scenario guide
 
+## Extensibility Roadmap
+
+FleetMind Studio is currently a 2D web-based AMR fleet planning studio, but it was designed around structured simulation data: scenario layout, agent decisions, trajectories, reservation logs, validation results, replay data, and exported datasets.
+
+Because of this structure, the project can be extended beyond a single web demo into a larger Physical AI simulation and data platform.
+
+Main extension directions:
+
+| Direction | Description |
+|---|---|
+| User-generated learning data | Users can create layouts, commands, routes, failures, and replay results that can become anonymized simulation learning data. |
+| Synthetic dataset library | Exported episodes can become a benchmark library for AMR task allocation, collision avoidance, bottleneck analysis, and layout optimization. |
+| Isaac Sim / MuJoCo / Gazebo bridge | Scenario JSON and trajectory data can be used to generate 3D or physics-based simulation environments. |
+| ROS2 / Nav2 bridge | Agent decisions and goals can be connected to ROS2 topics, services, and Nav2 actions for simulated or real AMR execution. |
+| 3D digital twin viewer | A Three.js or React Three Fiber viewer can render AMRs, workstations, obstacles, and trajectory replay in 3D. |
+| Optional LLM tool-calling Agent | The deterministic Agent can be extended with backend LLM tool calls for more complex natural-language fleet commands. |
+| Dynamic replanning | Runtime obstacles, failed routes, or deadlocks can trigger partial replanning and recovery. |
+| Algorithm comparison mode | A*, Time A*, prioritized planning, and MAPF-style planners can be compared using planning time, wait steps, detours, and success rate. |
+| Analytics dashboard | Dataset exports can support utilization charts, bottleneck heatmaps, conflict maps, and automated PoC reports. |
+| B2B SaaS platform | Customer workspaces, scenario versioning, team collaboration, and simulation reports can turn the project into a fleet simulation SaaS. |
+
+Detailed roadmap: [Extensibility Roadmap](docs/EXTENSIBILITY_ROADMAP.md)
+
+
 ## AI Tool Usage
 
 ChatGPT was used as a development assistant during the project, but the implementation was not submitted as unreviewed AI-generated code.
